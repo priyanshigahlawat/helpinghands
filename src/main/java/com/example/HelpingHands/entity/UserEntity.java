@@ -19,22 +19,24 @@ public class UserEntity {
     private Long userID;
 
     @Column
-    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
+    @Pattern(regexp = "^(.+)@(.+)$")
     private String email;
 
     @Column
     private String name;
 
     @Column
-    @Pattern(regexp = "^(\\+91[\\-\\s]?)?[0]?(91)?[789]\\d{9}$")
     private Long phone;
 
     @Column
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$")
     private String password;
 
     @Column
     private String token;
+
+    @Column
+    private String signingKey;
 
     @Column
     private Long adminStatus;

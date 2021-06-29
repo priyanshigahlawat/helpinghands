@@ -4,6 +4,7 @@ import com.example.HelpingHands.request.*;
 import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,7 @@ public class RecipientController {
     }
 
     @PostMapping("/login")
+    @CrossOrigin
     public  PortalResponse login(@RequestBody LoginRequest req){
         return loginService.login(req);
     }

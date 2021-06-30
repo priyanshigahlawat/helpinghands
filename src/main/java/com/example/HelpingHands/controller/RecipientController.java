@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class RecipientController {
 
     @Autowired
@@ -34,8 +35,12 @@ public class RecipientController {
         return registerService.saveInfo(req);
     }
 
+    @PostMapping("/verifyRegisterOtp")
+    public PortalResponse verifyRegisterOtp(@RequestBody VerifyMailOtp req){
+        return registerService.verifyOtp(req);
+    }
+
     @PostMapping("/login")
-    @CrossOrigin
     public  PortalResponse login(@RequestBody LoginRequest req){
         return loginService.login(req);
     }

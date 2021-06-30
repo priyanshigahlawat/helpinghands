@@ -5,7 +5,10 @@ import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.repository.OtpRepository;
 import com.example.HelpingHands.repository.UserRepository;
 import com.example.HelpingHands.request.RegisterRequest;
+import com.example.HelpingHands.request.VerifyMailOtp;
 import com.example.HelpingHands.response.PortalResponse;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +22,9 @@ public class RegisterService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    OtpRepository otpRepository;
 
     public PortalResponse saveInfo(@RequestBody @Valid RegisterRequest req){
         PortalResponse portalResponse = new PortalResponse();
@@ -47,4 +53,21 @@ public class RegisterService {
         return portalResponse;
     }
 
+    //=========================================VERIFY OTP===============================================================
+
+    public PortalResponse verifyOtp(@RequestBody VerifyMailOtp req){
+        PortalResponse portalResponse = new PortalResponse();
+        UserEntity userEntity1 = userRepository.findByEmail(req.getEmail());
+        OtpEntity otpEntity1 = otpRepository.findByEmail(req.getEmail());
+
+        String otp1 = otpEntity1.getOtp();
+        if(otp1.equals(req.getOtp())){
+            portalResponse.setMessage("Login successful");
+            portalResponse.setStatusCode("200");
+        } else {
+            portalResponse.setMessage("Invalid OTP");
+            portalResponse.setStatusCode("202");
+        }
+        return portalResponse;
+    }
 }

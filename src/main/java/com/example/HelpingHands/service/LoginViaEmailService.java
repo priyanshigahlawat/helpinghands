@@ -53,6 +53,7 @@ public class LoginViaEmailService {
             otpEntity.setEmailDesc(mailDesc);
             otpEntity.setDate(new Date(System.currentTimeMillis()));
             otpEntity.setOtp(otp);
+//            userEntity1.setGetOtpID(userEntity1.getUserID());
             otpRepository.save(otpEntity);
 
 

@@ -4,12 +4,14 @@ import com.example.HelpingHands.request.*;
 import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.sound.sampled.Port;
 import javax.validation.Valid;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,6 +31,9 @@ public class RecipientController {
 
     @Autowired
     LoginViaSmsService loginSmsService;
+
+    @Autowired
+    ImageService imageService;
 
     @PostMapping("/register")
     public PortalResponse saveInfo(@RequestBody @Valid RegisterRequest req){
@@ -68,6 +73,16 @@ public class RecipientController {
     @PostMapping("/veifySmsOtp")
     public PortalResponse verifySmsOtp(@RequestBody VerifySmsOtp req){
         return loginSmsService.verifyOtp(req);
+    }
+
+    @PostMapping("/uploadImage")
+    public PortalResponse imageUpload(@RequestParam String userID,
+                                      @RequestParam ArrayList<MultipartFile> fileFullWidth,
+                                      @RequestParam ArrayList<MultipartFile> fileThumbnail,
+                                      @RequestParam ArrayList<MultipartFile> filePortrait,
+                                      @RequestParam ArrayList<MultipartFile> fileSquare,
+                                      @RequestParam ArrayList<MultipartFile> fileHero)throws IOException {
+        return imageService.imageUpload(userID, fileFullWidth, fileThumbnail, filePortrait, fileSquare, fileHero);
     }
 
 }

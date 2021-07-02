@@ -27,12 +27,12 @@ public class TokenService {
 
     public PortalResponse verifyToken(@RequestBody TokenRequest req) {
         PortalResponse portalResponse = new PortalResponse();
-        UserEntity userEntity = userRepository.findByEmail(req.getEmail());
+        Optional<UserEntity> userEntity = userRepository.findById(req.getUserID());
 
         try {
             Claims claim = Jwts.parser()
                     .setSigningKey(key)
-                    .parseClaimsJws(userEntity.getToken())
+                    .parseClaimsJws(userEntity.get().getToken())
                     .getBody();
 
             System.out.println(claim.getId() + "   " + claim.getExpiration());
@@ -41,7 +41,7 @@ public class TokenService {
 
                 return portalResponse.commonErrorResponse("invalid user", "", "");
 
-            } else if (userEntity.getToken().equals(req.getToken())) {
+            } else if (userEntity.get().getToken().equals(req.getToken())) {
 
                 return portalResponse.commonSuccessResponse("valid user", "", "");
 

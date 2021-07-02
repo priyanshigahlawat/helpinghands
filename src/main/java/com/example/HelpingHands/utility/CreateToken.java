@@ -17,7 +17,7 @@ public class CreateToken {
         String token= Jwts.builder()
                 .setId(id)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*100))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*1000))
                 .signWith(SignatureAlgorithm.HS256,key)
                 .compact();
         return token;

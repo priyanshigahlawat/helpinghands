@@ -1,6 +1,8 @@
 package com.example.HelpingHands.response;
 
+import com.example.HelpingHands.entity.DonateEntity;
 import lombok.Data;
+import java.util.*;
 
 
 @Data
@@ -10,6 +12,7 @@ public class PortalResponse {
     private String token;
     private String requestId;
     private Object data;
+    private List<DonateEntity> data2;
 
     public static PortalResponse commonSuccessResponse( String message, String requestId, Object data){
         PortalResponse portalResponse=new PortalResponse();
@@ -21,7 +24,15 @@ public class PortalResponse {
         return portalResponse;
     }
 
+    public static PortalResponse customSuccessResponse(String message, String requestId, List<DonateEntity> data2){
+        PortalResponse portalResponse=new PortalResponse();
+        portalResponse.setStatusCode("200");
+        portalResponse.setMessage(message);
+        portalResponse.setRequestId(requestId);
+        portalResponse.setData2(data2);
 
+        return portalResponse;
+    }
 
     public static PortalResponse commonErrorResponse( String message, String requestId, Object data){
         PortalResponse portalResponse=new PortalResponse();

@@ -1,5 +1,6 @@
 package com.example.HelpingHands.service;
 
+import com.example.HelpingHands.DAOImplementation.SaveDonateInfo;
 import com.example.HelpingHands.entity.CategoryEntity;
 import com.example.HelpingHands.entity.DonateEntity;
 import com.example.HelpingHands.entity.OtpEntity;
@@ -44,9 +45,14 @@ public class ImageService {
     @Autowired
     VerifyToken verifyToken;
 
+    @Autowired
+    SaveDonateInfo saveDonateInfo;
+
     public PortalResponse imageUpload(@RequestParam String token,
                                       @RequestParam Long userId,
                                       @RequestParam Long category,
+                                      @RequestParam String item_desc,
+                                      @RequestParam String item_name,
                                       @RequestParam ArrayList<MultipartFile> fileFullWidth,
                                       @RequestParam ArrayList<MultipartFile> fileThumbnail,
                                       @RequestParam ArrayList<MultipartFile> filePortrait,
@@ -60,8 +66,6 @@ public class ImageService {
 
             DonateEntity donateEntity1 = new DonateEntity();
             donateRepository.save(donateEntity1);
-
-            Optional<DonateEntity> donateEntity = donateRepository.findById(donateRepository.max());
 
             String itemID = String.valueOf(donateRepository.max());
             String userID = String.valueOf(userId);
@@ -81,16 +85,8 @@ public class ImageService {
             String dynamicPath4 = SaveImage.saveImage(fileSquare,strDate,userID,itemID,url,"square.jpg");
             String dynamicPath5 = SaveImage.saveImage(fileHero,strDate,userID,itemID,url,"hero.jpg");
 
-
-            donateEntity.get().setFull_width(dynamicPath1);
-            donateEntity.get().setThumbnail(dynamicPath2);
-            donateEntity.get().setPortrait(dynamicPath3);
-            donateEntity.get().setSquare(dynamicPath4);
-            donateEntity.get().setHero(dynamicPath5);
-            donateEntity.get().setCategoryID(category);
-            donateEntity.get().setDate(new Date(System.currentTimeMillis()));
-
-            donateRepository.save(donateEntity.get());
+            Optional<DonateEntity> donateEntity = saveDonateInfo.saveInfo(dynamicPath1,dynamicPath2,dynamicPath3,dynamicPath4,
+                    dynamicPath5, category, item_name, item_desc, userId);
 
             return portalResponse.commonSuccessResponse("Image Uploaded","",donateEntity);
         } else {

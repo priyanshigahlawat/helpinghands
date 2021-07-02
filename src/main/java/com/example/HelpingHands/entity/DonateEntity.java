@@ -42,6 +42,9 @@ public class DonateEntity {
     @Column
     private String hero;
 
+    @Column
+    private Long categoryID;
+
     @OneToMany(targetEntity = RequestEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "itemID", referencedColumnName = "itemID")
     private List<RequestEntity> getItemID;

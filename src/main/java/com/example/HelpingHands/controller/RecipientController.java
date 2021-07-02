@@ -76,13 +76,15 @@ public class RecipientController {
     }
 
     @PostMapping("/uploadImage")
-    public PortalResponse imageUpload(@RequestParam String userID,
+    public PortalResponse imageUpload(@RequestParam String token,
+                                      @RequestParam Long userID,
+                                      @RequestParam Long category,
                                       @RequestParam ArrayList<MultipartFile> fileFullWidth,
                                       @RequestParam ArrayList<MultipartFile> fileThumbnail,
                                       @RequestParam ArrayList<MultipartFile> filePortrait,
                                       @RequestParam ArrayList<MultipartFile> fileSquare,
                                       @RequestParam ArrayList<MultipartFile> fileHero)throws IOException {
-        return imageService.imageUpload(userID, fileFullWidth, fileThumbnail, filePortrait, fileSquare, fileHero);
+        return imageService.imageUpload(token,userID,category, fileFullWidth, fileThumbnail, filePortrait, fileSquare, fileHero);
     }
 
 }

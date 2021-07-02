@@ -14,6 +14,7 @@ import com.example.HelpingHands.utility.PhoneUtility;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,6 +30,9 @@ public class LoginViaSmsService {
 
     @Autowired
     PhoneUtility phoneUtility;
+
+    @Value("${signingKey}")
+    private String key;
 
     public PortalResponse sendOtp(@RequestBody LoginSmsRequest req){
 
@@ -53,15 +57,13 @@ public class LoginViaSmsService {
             otpEntity.setOtp(otp);
             otpRepository.save(otpEntity);
 
-            portalResponse.setMessage("Sms send");
-            portalResponse.setStatusCode("200");
+           return portalResponse.commonSuccessResponse("Sms send","",otpEntity);
         } else {
-            portalResponse.setMessage("You need to register First");
-            portalResponse.setStatusCode("202");
+         return   portalResponse.commonErrorResponse("You need to register First","","");
+
         }
 
-        return portalResponse;
-    }
+}
 
     //=================================================VERIFY OTP=======================================================
 
@@ -72,31 +74,21 @@ public class LoginViaSmsService {
         String otp1 = otpEntity1.getOtp();
         if(otp1.equals(req.getOtp())){
 
-            String str = "";
-            String val = "1234567890";
-            for(int i = 0; i < 4; i++){
-                int z = (int)(Math.random() * val.length());
-                str = str + z;
-            }
 
             String token= Jwts.builder()
                     .setId(userEntity1.getEmail())
                     .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
                     .setExpiration(new Date(System.currentTimeMillis()+1000*100))
-                    .signWith(SignatureAlgorithm.HS256,str)
+                    .signWith(SignatureAlgorithm.HS256,key)
                     .compact();
 
             userEntity1.setToken(token);
-            userEntity1.setSigningKey(str);
             userRepository.save(userEntity1);
 
-            portalResponse.setMessage("Login successful");
-            portalResponse.setStatusCode("200");
-            portalResponse.setToken(token);
+
+           return  portalResponse.commonSuccessResponse("Login successfull","",userEntity1);
         } else {
-            portalResponse.setMessage("Invalid OTP");
-            portalResponse.setStatusCode("202");
+        return    portalResponse.commonErrorResponse("Invalid OTP","","");
         }
-        return portalResponse;
     }
 }

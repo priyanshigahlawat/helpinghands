@@ -39,18 +39,16 @@ public class RegisterService {
                 userEntity.setPassword(req.getPassword());
                 userEntity.setAdminStatus(0L);
                 userRepository.save(userEntity);
-                portalResponse.setMessage("Record saved");
-                portalResponse.setStatusCode("200");
+
+            return  portalResponse.commonSuccessResponse("Record saved","",userEntity);
             }else {
-                portalResponse.setMessage("record already present");
-                portalResponse.setStatusCode("202");
+             return  portalResponse.commonErrorResponse("record already present","","");
+
             }
 
         } catch (ConstraintViolationException ex){
-            portalResponse.setMessage("invalid email or password");
-            portalResponse.setStatusCode("202");
+           return portalResponse.commonErrorResponse("invalid email or password","","");
         }
-        return portalResponse;
     }
 
     //=========================================VERIFY OTP===============================================================
@@ -62,12 +60,9 @@ public class RegisterService {
 
         String otp1 = otpEntity1.getOtp();
         if(otp1.equals(req.getOtp())){
-            portalResponse.setMessage("Login successful");
-            portalResponse.setStatusCode("200");
+           return portalResponse.commonSuccessResponse("Login successful","","");
         } else {
-            portalResponse.setMessage("Invalid OTP");
-            portalResponse.setStatusCode("202");
+          return  portalResponse.commonErrorResponse("Invalid OTP","","");
         }
-        return portalResponse;
     }
 }

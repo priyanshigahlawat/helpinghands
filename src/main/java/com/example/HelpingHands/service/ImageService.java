@@ -70,10 +70,9 @@ public class ImageService {
         donateEntity.get().setDate(new Date(System.currentTimeMillis()));
         donateRepository.save(donateEntity.get());
 
-        portalResponse.setStatusCode("200");
-        portalResponse.setMessage("Image Uploaded");
+       return portalResponse.commonSuccessResponse("Image Uploaded","",donateEntity);
 
-        return portalResponse;
+
     }
 
     public void makeDateDirectoryIfNotExist(String url){

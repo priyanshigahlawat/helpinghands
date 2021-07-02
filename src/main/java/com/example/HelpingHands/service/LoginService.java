@@ -11,6 +11,7 @@ import com.twilio.type.PhoneNumber;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,6 +24,9 @@ public class LoginService {
     @Autowired
     UserRepository userRepository;
 
+    @Value("${signingKey}")
+    private String key;
+
     public PortalResponse login(@RequestBody LoginRequest req){
 
         try{
@@ -32,39 +36,28 @@ public class LoginService {
             if(userEntity1 != null){
                 if(userEntity1.getPassword().equals(req.getPassword())){
 
-                    String str = "";
-                    String val = "1234567890";
-                    for(int i = 0; i < 4; i++){
-                        int z = (int)(Math.random() * val.length());
-                        str = str + z;
-                    }
 
                     String token= Jwts.builder()
                             .setId(req.getEmail())
                             .setIssuedAt(new Date(System.currentTimeMillis()))
                             .setExpiration(new Date(System.currentTimeMillis()+1000*100))
-                            .signWith(SignatureAlgorithm.HS256,str)
+                            .signWith(SignatureAlgorithm.HS256,key)
                             .compact();
 
                     userEntity1.setToken(token);
-                    userEntity1.setSigningKey(str);
                     userRepository.save(userEntity1);
 
-                    portalResponse.setMessage("Login Successfull");
-                    portalResponse.setStatusCode("200");
-                    portalResponse.setToken(token);
+
+                  return  portalResponse.commonSuccessResponse("Login Successfull","",userEntity1);
 
                 } else{
-                    portalResponse.setMessage("Password Incorrect");
-                    portalResponse.setStatusCode("202");
+                 return    portalResponse.commonErrorResponse("Password Incorrect","","");
                 }
 
             } else {
-                portalResponse.setMessage("Record not found");
-                portalResponse.setStatusCode("202");
+             return   portalResponse.commonErrorResponse("Record not found","","");
             }
 
-            return portalResponse;
 
         } catch (Exception e){}
         return null;

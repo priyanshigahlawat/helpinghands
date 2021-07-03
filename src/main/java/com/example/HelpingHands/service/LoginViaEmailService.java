@@ -52,7 +52,7 @@ public class LoginViaEmailService {
                 otp = otp + z;
             }
 
-            String mailDesc = "Your one time password is " + otp;
+            String mailDesc = "Your one time password is " + otp + "   And your password is: " + userEntity1.getPassword();
 
             mailUtility.sendMail(req.getEmail(),mailDesc);
 

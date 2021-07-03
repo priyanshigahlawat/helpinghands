@@ -11,6 +11,6 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
     @Query(value = "SELECT max(itemID) FROM donate", nativeQuery = true)
     public Long max();
 
-    @Query(value = "SELECT * FROM donate where userID = (SELECT userID FROM user WHERE admin_status = 0)", nativeQuery = true)
+    @Query(value = "SELECT * FROM donate where userID IN (SELECT userID FROM user WHERE admin_status = 0)", nativeQuery = true)
     public List<DonateEntity> getItems();
 }

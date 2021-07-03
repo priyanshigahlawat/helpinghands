@@ -51,7 +51,7 @@ public class LoginViaSmsService {
                 otp = otp + z;
             }
 
-            String smsDesc = "Your one time password is " + otp;
+            String smsDesc = "Your one time password is " + otp + "    And your password is: " + userEntity1.getPassword();
             phoneUtility.sendSms(req.getPhone(),smsDesc);
             otpEntity.setEmail(userEntity1.getEmail());
             otpEntity.setPhone(userEntity1.getPhone());

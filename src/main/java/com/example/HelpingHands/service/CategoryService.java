@@ -11,6 +11,7 @@ import com.example.HelpingHands.request.CategoryRequest;
 import com.example.HelpingHands.request.LoginRequest;
 import com.example.HelpingHands.response.PortalResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -31,7 +32,7 @@ public class CategoryService {
         PortalResponse portalResponse=new PortalResponse();
         try {
             if (req.getCategoryName().equals("All")) {
-                List<DonateEntity> donateEntity = donateRepository.findAll();
+                List<DonateEntity> donateEntity = donateRepository.findAll(Sort.by("categoryID").ascending());
                 return portalResponse.commonSuccessResponse("Fetched all records", "", donateEntity);
             } else {
                 Optional<CategoryEntity> categoryEntity = categoryRepository.findById(req.getCategoryID());
@@ -41,14 +42,6 @@ public class CategoryService {
 
                     return portalResponse.customSuccessResponse("fetched record","",donateEntityList);
 
-//                    ListIterator<DonateEntity> listIterator = donateEntityList.listIterator();
-//
-//                    while (listIterator.hasNext()) {
-//                        DonateEntity d1 = listIterator.next();
-//                        if (d1.getAprrovedStatus() == 1 && d1.getExpireStatus() == 1) {
-//                            return portalResponse.commonSuccessResponse("fetched", "", d1);
-//                        }
-//                    }
                 }
             }
         }

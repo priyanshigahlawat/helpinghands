@@ -36,17 +36,10 @@ public class UserEntity {
     private String token;
 
     @Column
-    private String signingKey;
-
-    @Column
     private Long adminStatus;
 
     @Column
     private Long adminID;
-
-    @OneToMany(targetEntity = DonateEntity.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "userID", referencedColumnName = "userID")
-    private List<DonateEntity>getUserID;
 
     @OneToMany(targetEntity = DonateEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "adminID", referencedColumnName = "userID")

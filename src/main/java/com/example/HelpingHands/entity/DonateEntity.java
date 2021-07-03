@@ -46,13 +46,16 @@ public class DonateEntity {
     private Long categoryID;
 
     @Column
+    private Long adminID;
+
+    @Column
+    private Long userID;
+
+    @Column
     private String adminMessage;
 
     @Column
     private Long aprrovedStatus;
-
-    @Column
-    private Long adminID;
 
     @OneToMany(targetEntity = RequestEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "itemID", referencedColumnName = "itemID")

@@ -2,7 +2,11 @@ package com.example.HelpingHands.repository;
 
 import com.example.HelpingHands.entity.CategoryEntity;
 import com.example.HelpingHands.entity.DonateEntity;
+
 import com.example.HelpingHands.entity.UserEntity;
+
+import java.util.*;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,5 +23,9 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
 
     @Query(value = "SELECT * FROM donate ", nativeQuery = true)
     public List<DonateEntity> fetchAllItems();
+
+
+    @Query(value = "SELECT * FROM donate where userID IN (SELECT userID FROM user WHERE admin_status = 0)", nativeQuery = true)
+    public List<DonateEntity> getItems();
 
 }

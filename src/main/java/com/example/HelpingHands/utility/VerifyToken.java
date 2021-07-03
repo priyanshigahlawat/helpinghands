@@ -1,9 +1,7 @@
-package com.example.HelpingHands.service;
+package com.example.HelpingHands.utility;
 
 import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.repository.UserRepository;
-import com.example.HelpingHands.request.TokenRequest;
-import com.example.HelpingHands.response.PortalResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,23 +9,23 @@ import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class TokenService {
+public class VerifyToken {
+
     @Autowired
     UserRepository userRepository;
-
 
     @Value("${signingKey}")
     private String key;
 
-    public PortalResponse verifyToken(@RequestBody TokenRequest req) {
-        PortalResponse portalResponse = new PortalResponse();
-        Optional<UserEntity> userEntity = userRepository.findById(req.getUserID());
+    public boolean verifyToken(Long userID, String token){
+
+        boolean flag;
+        Optional<UserEntity> userEntity = userRepository.findById(userID);
 
         try {
             Claims claim = Jwts.parser()
@@ -39,23 +37,18 @@ public class TokenService {
 
             if (claim.getExpiration().before(new Date(System.currentTimeMillis()))) {
 
-                return portalResponse.commonErrorResponse("invalid user", "", "");
+                flag = false;
 
-            } else if (userEntity.get().getToken().equals(req.getToken())) {
-
-                return portalResponse.commonSuccessResponse("valid user", "", "");
-
+            } else if (userEntity.get().getToken().equals(token)) {
+                flag = true;
             } else {
-
-                return portalResponse.commonErrorResponse("invalid user", "", "");
+                flag = false;
             }
         } catch (SignatureException ex) {
-            return portalResponse.commonErrorResponse("invalid user", "", "");
-
+            flag = false;
         } catch (ExpiredJwtException ex) {
-
-            return portalResponse.commonErrorResponse("invalid user", "", "");
+            flag = false;
         }
-
+        return flag;
     }
 }

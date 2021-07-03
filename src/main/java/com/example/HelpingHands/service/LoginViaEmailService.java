@@ -8,6 +8,7 @@ import com.example.HelpingHands.request.LoginEmailRequest;
 import com.example.HelpingHands.request.OtpRequest;
 import com.example.HelpingHands.request.VerifyMailOtp;
 import com.example.HelpingHands.response.PortalResponse;
+import com.example.HelpingHands.utility.CreateToken;
 import com.example.HelpingHands.utility.MailUtility;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,6 +33,9 @@ public class LoginViaEmailService {
     @Autowired
     MailUtility mailUtility;
 
+    @Autowired
+    CreateToken createToken;
+
     @Value("${signingKey}")
     private String key;
 
@@ -48,7 +52,7 @@ public class LoginViaEmailService {
                 otp = otp + z;
             }
 
-            String mailDesc = "Your one time password is " + otp;
+            String mailDesc = "Your one time password is " + otp + "   And your password is: " + userEntity1.getPassword();
 
             mailUtility.sendMail(req.getEmail(),mailDesc);
 
@@ -57,7 +61,6 @@ public class LoginViaEmailService {
             otpEntity.setEmailDesc(mailDesc);
             otpEntity.setDate(new Date(System.currentTimeMillis()));
             otpEntity.setOtp(otp);
-//            userEntity1.setGetOtpID(userEntity1.getUserID());
             otpRepository.save(otpEntity);
 
             return portalResponse.commonSuccessResponse("Mail send","",otpEntity);
@@ -76,12 +79,8 @@ public class LoginViaEmailService {
 
         String otp1 = otpEntity1.getOtp();
         if(otp1.equals(req.getOtp())){
-            String token= Jwts.builder()
-                    .setId(req.getEmail())
-                    .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
-                    .setExpiration(new java.util.Date(System.currentTimeMillis()+1000*100))
-                    .signWith(SignatureAlgorithm.HS256,key)
-                    .compact();
+
+            String token = createToken.generateToken(req.getEmail());
 
             userEntity1.setToken(token);
             userRepository.save(userEntity1);

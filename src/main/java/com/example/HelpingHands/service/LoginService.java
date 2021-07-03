@@ -5,6 +5,7 @@ import com.example.HelpingHands.repository.UserRepository;
 import com.example.HelpingHands.request.LoginEmailRequest;
 import com.example.HelpingHands.request.LoginRequest;
 import com.example.HelpingHands.response.PortalResponse;
+import com.example.HelpingHands.utility.CreateToken;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -24,8 +25,8 @@ public class LoginService {
     @Autowired
     UserRepository userRepository;
 
-    @Value("${signingKey}")
-    private String key;
+    @Autowired
+    CreateToken createToken;
 
     public PortalResponse login(@RequestBody LoginRequest req){
 
@@ -36,17 +37,9 @@ public class LoginService {
             if(userEntity1 != null){
                 if(userEntity1.getPassword().equals(req.getPassword())){
 
-
-                    String token= Jwts.builder()
-                            .setId(req.getEmail())
-                            .setIssuedAt(new Date(System.currentTimeMillis()))
-                            .setExpiration(new Date(System.currentTimeMillis()+1000*100))
-                            .signWith(SignatureAlgorithm.HS256,key)
-                            .compact();
-
+                    String token = createToken.generateToken(req.getEmail());
                     userEntity1.setToken(token);
                     userRepository.save(userEntity1);
-
 
                   return  portalResponse.commonSuccessResponse("Login Successfull","",userEntity1);
 

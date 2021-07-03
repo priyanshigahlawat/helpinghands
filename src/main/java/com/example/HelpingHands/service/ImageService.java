@@ -1,12 +1,19 @@
 package com.example.HelpingHands.service;
 
+import com.example.HelpingHands.DAOImplementation.SaveDonateInfo;
+import com.example.HelpingHands.entity.CategoryEntity;
 import com.example.HelpingHands.entity.DonateEntity;
+import com.example.HelpingHands.entity.OtpEntity;
+import com.example.HelpingHands.repository.CategoryRepository;
 import com.example.HelpingHands.repository.DonateRepository;
+import com.example.HelpingHands.request.TokenRequest;
 import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.utility.SaveImage;
+import com.example.HelpingHands.utility.VerifyToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,46 +39,59 @@ public class ImageService {
     @Autowired
     DonateRepository donateRepository;
 
-    public PortalResponse imageUpload(@RequestParam String userID,
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    VerifyToken verifyToken;
+
+    @Autowired
+    SaveDonateInfo saveDonateInfo;
+
+    public PortalResponse imageUpload(@RequestParam String token,
+                                      @RequestParam Long userId,
+                                      @RequestParam Long category,
+                                      @RequestParam String item_desc,
+                                      @RequestParam String item_name,
                                       @RequestParam ArrayList<MultipartFile> fileFullWidth,
                                       @RequestParam ArrayList<MultipartFile> fileThumbnail,
                                       @RequestParam ArrayList<MultipartFile> filePortrait,
                                       @RequestParam ArrayList<MultipartFile> fileSquare,
                                       @RequestParam ArrayList<MultipartFile> fileHero) throws IOException {
 
-        DonateEntity donateEntity1 = new DonateEntity();
-        donateRepository.save(donateEntity1);
-        
+        boolean flag = verifyToken.verifyToken(userId,token);
         PortalResponse portalResponse = new PortalResponse();
-        Optional<DonateEntity> donateEntity = donateRepository.findById(donateRepository.max());
-        
-        String itemID = String.valueOf(donateRepository.max());
-        
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String strDate = dateFormat.format(date);
-        System.out.println(strDate);
+        if(flag == true){
+            Optional<CategoryEntity> categoryEntity = categoryRepository.findById(category);
 
-        makeDateDirectoryIfNotExist(url + "\\" + strDate);
-        makeUserIDDirectoryIfNotExist(url + "\\" + strDate + "\\" + userID);
-        makeItemIDDirectoryIfNotExist(url + "\\" + strDate + "\\" + userID + "\\" + itemID);
+            DonateEntity donateEntity1 = new DonateEntity();
+            donateRepository.save(donateEntity1);
 
-        String dynamicPath1 = SaveImage.saveImage(fileFullWidth,strDate,userID,itemID,url,"full-width.jpg");
-        String dynamicPath2 = SaveImage.saveImage(fileThumbnail,strDate,userID,itemID,url,"thumbnail.jpg");
-        String dynamicPath3 = SaveImage.saveImage(filePortrait,strDate,userID,itemID,url,"portrait.jpg");
-        String dynamicPath4 = SaveImage.saveImage(fileSquare,strDate,userID,itemID,url,"square.jpg");
-        String dynamicPath5 = SaveImage.saveImage(fileHero,strDate,userID,itemID,url,"hero.jpg");
+            String itemID = String.valueOf(donateRepository.max());
+            String userID = String.valueOf(userId);
 
-        donateEntity.get().setFull_width(dynamicPath1);
-        donateEntity.get().setThumbnail(dynamicPath2);
-        donateEntity.get().setPortrait(dynamicPath3);
-        donateEntity.get().setSquare(dynamicPath4);
-        donateEntity.get().setHero(dynamicPath5);
-        donateEntity.get().setDate(new Date(System.currentTimeMillis()));
-        donateRepository.save(donateEntity.get());
+            Date date = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String strDate = dateFormat.format(date);
+            System.out.println(strDate);
 
-       return portalResponse.commonSuccessResponse("Image Uploaded","",donateEntity);
+            makeDateDirectoryIfNotExist(url + "\\" + strDate);
+            makeUserIDDirectoryIfNotExist(url + "\\" + strDate + "\\" + userID);
+            makeItemIDDirectoryIfNotExist(url + "\\" + strDate + "\\" + userID + "\\" + itemID);
 
+            String dynamicPath1 = SaveImage.saveImage(fileFullWidth,strDate,userID,itemID,url,"full-width.jpg");
+            String dynamicPath2 = SaveImage.saveImage(fileThumbnail,strDate,userID,itemID,url,"thumbnail.jpg");
+            String dynamicPath3 = SaveImage.saveImage(filePortrait,strDate,userID,itemID,url,"portrait.jpg");
+            String dynamicPath4 = SaveImage.saveImage(fileSquare,strDate,userID,itemID,url,"square.jpg");
+            String dynamicPath5 = SaveImage.saveImage(fileHero,strDate,userID,itemID,url,"hero.jpg");
+
+            Optional<DonateEntity> donateEntity = saveDonateInfo.saveInfo(dynamicPath1,dynamicPath2,dynamicPath3,dynamicPath4,
+                    dynamicPath5, category, item_name, item_desc, userId);
+
+            return portalResponse.commonSuccessResponse("Image Uploaded","",donateEntity);
+        } else {
+            return portalResponse.commonErrorResponse("invalid user", "", "");
+        }
 
     }
 

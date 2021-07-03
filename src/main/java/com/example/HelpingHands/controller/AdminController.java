@@ -1,5 +1,6 @@
 package com.example.HelpingHands.controller;
 
+import com.example.HelpingHands.request.ApproveItemRequest;
 import com.example.HelpingHands.request.TokenRequest;
 import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.service.AdminService;
@@ -13,8 +14,13 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @PostMapping("fetchItem")
+    @PostMapping("/fetchItem")
     public PortalResponse fetchData(@RequestBody TokenRequest request){
         return adminService.fetchData(request);
+    }
+
+    @PostMapping("/approveItem")
+    public PortalResponse approveItem(@RequestBody ApproveItemRequest request){
+        return adminService.approveItem(request);
     }
 }

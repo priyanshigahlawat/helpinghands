@@ -4,12 +4,13 @@ import com.example.HelpingHands.entity.DonateEntity;
 import lombok.Data;
 import java.util.*;
 
+import java.util.List;
+
 
 @Data
 public class PortalResponse {
     private String statusCode;
     private String message;
-    private String token;
     private String requestId;
     private Object data;
     private List<DonateEntity> data2;
@@ -43,6 +44,8 @@ public class PortalResponse {
 
         return portalResponse;
     }
+
+
 
 
 }

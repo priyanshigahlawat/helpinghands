@@ -35,6 +35,9 @@ public class RecipientController {
     @Autowired
     ImageService imageService;
 
+    @Autowired
+    CategoryService categoryService;
+
     @PostMapping("/register")
     public PortalResponse saveInfo(@RequestBody @Valid RegisterRequest req){
         return registerService.saveInfo(req);
@@ -70,7 +73,7 @@ public class RecipientController {
         return loginSmsService.sendOtp(req);
     }
 
-    @PostMapping("/veifySmsOtp")
+    @PostMapping("/verifySmsOtp")
     public PortalResponse verifySmsOtp(@RequestBody VerifySmsOtp req){
         return loginSmsService.verifyOtp(req);
     }
@@ -88,4 +91,12 @@ public class RecipientController {
                                       @RequestParam ArrayList<MultipartFile> fileHero)throws IOException {
         return imageService.imageUpload(token, userID, category,item_desc, item_name, fileFullWidth, fileThumbnail, filePortrait, fileSquare, fileHero);
     }
+
+
+    @PostMapping("/category")
+    public PortalResponse category(@RequestBody CategoryRequest req){
+        return categoryService.categoryInfo(req);
+    }
+
+
 }

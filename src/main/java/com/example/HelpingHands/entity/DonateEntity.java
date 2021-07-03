@@ -22,7 +22,7 @@ public class DonateEntity {
     private String itemDesc;
 
     @Column
-    private Long status;
+    private Long ExpireStatus;
 
     @Column
     private Date date;
@@ -41,6 +41,18 @@ public class DonateEntity {
 
     @Column
     private String hero;
+
+    @Column
+    private Long categoryID;
+
+    @Column
+    private String adminMessage;
+
+    @Column
+    private Long aprrovedStatus;
+
+    @Column
+    private Long adminID;
 
     @OneToMany(targetEntity = RequestEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "itemID", referencedColumnName = "itemID")

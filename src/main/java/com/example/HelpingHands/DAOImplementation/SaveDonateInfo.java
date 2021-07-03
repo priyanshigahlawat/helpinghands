@@ -24,6 +24,7 @@ public class SaveDonateInfo {
                                            String item_desc,
                                            Long userID){
         Optional<DonateEntity> donateEntity = donateRepository.findById(donateRepository.max());
+
         donateEntity.get().setFull_width(dynamicPath1);
         donateEntity.get().setThumbnail(dynamicPath2);
         donateEntity.get().setPortrait(dynamicPath3);
@@ -35,7 +36,7 @@ public class SaveDonateInfo {
         donateEntity.get().setUserID(userID);
         donateEntity.get().setAprrovedStatus(0L);
         donateEntity.get().setExpireStatus(0L);
-        donateEntity.get().setDate(new Date(System.currentTimeMillis()));
+        donateEntity.get().setDate(new Date());
         donateRepository.save(donateEntity.get());
 
         return donateEntity;

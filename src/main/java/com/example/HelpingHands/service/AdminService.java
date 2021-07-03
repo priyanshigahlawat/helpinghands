@@ -2,15 +2,16 @@ package com.example.HelpingHands.service;
 
 import com.example.HelpingHands.DAOImplementation.ApproveItem;
 import com.example.HelpingHands.entity.DonateEntity;
-import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.repository.DonateRepository;
-import com.example.HelpingHands.repository.UserRepository;
 import com.example.HelpingHands.request.ApproveItemRequest;
 import com.example.HelpingHands.request.TokenRequest;
 import com.example.HelpingHands.response.PortalResponse;
+import com.example.HelpingHands.utility.ImageResponse;
 import com.example.HelpingHands.utility.VerifyToken;
 import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,18 +27,26 @@ public class AdminService {
     @Autowired
     DonateRepository donateRepository;
 
+    @Autowired
+    ImageResponse imageResponse;
+
     public PortalResponse fetchData(@RequestBody TokenRequest request){
-        boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
-        if(flag == true){
+        try{
+            boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
+            if(flag == true){
 
-            List<DonateEntity> donateEntities =  donateRepository.getItems();
+                List<DonateEntity> donateEntities =  donateRepository.getItems();
 
-            System.out.println(donateEntities);
-            return PortalResponse.customSuccessResponse("Fetched data","",donateEntities);
-        }
-        else {
-            return PortalResponse.commonErrorResponse("InvalidUser","","");
-        }
+                List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntities);
+
+                System.out.println(donateEntities);
+                return PortalResponse.customSuccessResponse("Fetched data","",donateEntityList);
+            }
+            else {
+                return PortalResponse.commonErrorResponse("InvalidUser","","");
+            }
+        } catch(Exception ex){}
+        return null;
     }
 
     //===========================================APPROVE ITEMS=============================================

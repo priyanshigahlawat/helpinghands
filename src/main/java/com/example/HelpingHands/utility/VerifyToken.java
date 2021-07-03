@@ -36,9 +36,7 @@ public class VerifyToken {
             System.out.println(claim.getId() + "   " + claim.getExpiration());
 
             if (claim.getExpiration().before(new Date(System.currentTimeMillis()))) {
-
                 flag = false;
-
             } else if (userEntity.get().getToken().equals(token)) {
                 flag = true;
             } else {

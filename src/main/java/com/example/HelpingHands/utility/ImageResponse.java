@@ -21,8 +21,6 @@ public class ImageResponse {
             String portrait = url + "\\" + d1.getPortrait();
             String square = url + "\\" + d1.getSquare();
             String hero = url + "\\" + d1.getHero();
-            System.out.println(fullWidth);
-            System.out.println(thumbnail);
             d1.setFull_width(fullWidth);
             d1.setThumbnail(thumbnail);
             d1.setPortrait(portrait);

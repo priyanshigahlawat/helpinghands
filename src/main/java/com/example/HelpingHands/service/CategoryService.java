@@ -53,8 +53,14 @@ public class CategoryService {
                 if (req.getCategoryName().equals("All")) {
                     List<DonateEntity> donateEntity = donateRepository.findAll(Sort.by("categoryID").ascending());
                     List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntity);
+                    Long maxCategortID = categoryRepository.max();
 
-                    return portalResponse.commonSuccessResponse("Fetched all records", "", donateEntityList);
+                    List<List<DonateEntity>> itemList = new ArrayList<List<DonateEntity>>();
+                    for(int i=1; i<=maxCategortID; i++){
+                        List<DonateEntity> donateEntity1 = donateRepository.getCategoryId((long) i);
+                        itemList.add(donateEntity1);
+                    }
+                    return portalResponse.commonSuccessResponse("Fetched all records", "", itemList);
                 }
                 else {
                     Optional<CategoryEntity> categoryEntity = categoryRepository.findById(req.getCategoryID());
@@ -68,6 +74,7 @@ public class CategoryService {
                 }
             }
             catch(Exception e){
+                System.out.println(e.getMessage());
                 return  portalResponse.commonErrorResponse("No matched record found","","");
             }
         }
@@ -108,7 +115,6 @@ public class CategoryService {
             }else if(request.getFetchDate().equals("SixMonths")){
                 donateEntities = donateRepository.fetchDateWiseItems(strMonth6);
             }
-
             return PortalResponse.customSuccessResponse("Fetched data","",donateEntities);
         } else {
             return PortalResponse.commonErrorResponse("InvalidUser","","");

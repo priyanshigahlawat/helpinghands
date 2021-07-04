@@ -2,12 +2,15 @@ package com.example.HelpingHands.response;
 
 import com.example.HelpingHands.entity.DonateEntity;
 import lombok.Data;
+import lombok.ToString;
+
 import java.util.*;
 
 import java.util.List;
 
 
 @Data
+@ToString
 public class PortalResponse {
     private String statusCode;
     private String message;

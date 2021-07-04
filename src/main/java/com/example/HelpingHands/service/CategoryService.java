@@ -55,7 +55,7 @@ public class CategoryService {
                     List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntity);
 
                     return portalResponse.commonSuccessResponse("Fetched all records", "", donateEntityList);
-                } 
+                }
                 else {
                     Optional<CategoryEntity> categoryEntity = categoryRepository.findById(req.getCategoryID());
                     if (categoryEntity != null) {

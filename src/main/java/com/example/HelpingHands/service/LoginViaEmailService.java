@@ -1,5 +1,6 @@
 package com.example.HelpingHands.service;
 
+import com.example.HelpingHands.DAOImplementation.SaveMailOtp;
 import com.example.HelpingHands.entity.OtpEntity;
 import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.repository.OtpRepository;
@@ -36,6 +37,9 @@ public class LoginViaEmailService {
     @Autowired
     CreateToken createToken;
 
+    @Autowired
+    SaveMailOtp saveMailOtp;
+
     @Value("${signingKey}")
     private String key;
 
@@ -53,15 +57,8 @@ public class LoginViaEmailService {
             }
 
             String mailDesc = "Your one time password is " + otp + "   And your password is: " + userEntity1.getPassword();
-
             mailUtility.sendMail(req.getEmail(),mailDesc);
-
-            otpEntity.setEmail(req.getEmail());
-            otpEntity.setPhone(userEntity1.getPhone());
-            otpEntity.setEmailDesc(mailDesc);
-            otpEntity.setDate(new Date(System.currentTimeMillis()));
-            otpEntity.setOtp(otp);
-            otpRepository.save(otpEntity);
+            saveMailOtp.saveOtpInfo(otpEntity,req.getEmail(), userEntity1.getPhone(),mailDesc,otp);
 
             return portalResponse.commonSuccessResponse("Mail send","",otpEntity);
         } else {

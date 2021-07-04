@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository  extends JpaRepository<CategoryEntity,Long> {
-
+    @Query(value = "SELECT max(categoryID) FROM category", nativeQuery = true)
+    public Long max();
 }

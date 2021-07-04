@@ -1,5 +1,6 @@
 package com.example.HelpingHands.service;
 
+import com.example.HelpingHands.DAOImplementation.SaveSmsOtp;
 import com.example.HelpingHands.entity.OtpEntity;
 import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.repository.OtpRepository;
@@ -35,6 +36,9 @@ public class LoginViaSmsService {
     @Autowired
     CreateToken createToken;
 
+    @Autowired
+    SaveSmsOtp saveSmsOtp;
+
     @Value("${signingKey}")
     private String key;
 
@@ -53,10 +57,7 @@ public class LoginViaSmsService {
 
             String smsDesc = "Your one time password is " + otp + "    And your password is: " + userEntity1.getPassword();
             phoneUtility.sendSms(req.getPhone(),smsDesc);
-            otpEntity.setEmail(userEntity1.getEmail());
-            otpEntity.setPhone(userEntity1.getPhone());
-            otpEntity.setOtp(otp);
-            otpRepository.save(otpEntity);
+            saveSmsOtp.saveOtpInfo(otpEntity,userEntity1,otp);
             return portalResponse.commonSuccessResponse("Sms send","",otpEntity);
         }
         else {

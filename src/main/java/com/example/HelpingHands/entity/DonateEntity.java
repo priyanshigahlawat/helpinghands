@@ -1,5 +1,6 @@
 package com.example.HelpingHands.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -41,9 +42,6 @@ public class DonateEntity {
 
     @Column
     private String hero;
-
-    @Column
-    private Long categoryID;
 
     @Column
     private Long adminID;

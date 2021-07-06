@@ -67,32 +67,37 @@ public class ImageService {
             DonateEntity donateEntity1 = new DonateEntity();
             donateRepository.save(donateEntity1);
 
+            String staticPath = "src\\main\\resources\\static\\Photos";
+
+            File file = new File(staticPath);
+            String path = file.getAbsolutePath();
+
             String itemID = String.valueOf(donateRepository.max());
             String userID = String.valueOf(userId);
 
             Date date = new Date();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String strDate = dateFormat.format(date);
-            System.out.println(strDate);
 
-            makeDateDirectoryIfNotExist(url + "\\" + strDate);
-            makeUserIDDirectoryIfNotExist(url + "\\" + strDate + "\\" + userID);
-            makeItemIDDirectoryIfNotExist(url + "\\" + strDate + "\\" + userID + "\\" + itemID);
+            makeDateDirectoryIfNotExist(path + "\\" + strDate);
+            makeUserIDDirectoryIfNotExist(path + "\\" + strDate + "\\" + userID);
+            makeItemIDDirectoryIfNotExist(path + "\\" + strDate + "\\" + userID + "\\" + itemID);
 
-            String dynamicPath1 = SaveImage.saveImage(fileFullWidth,strDate,userID,itemID,url,"full-width.jpg");
-            String dynamicPath2 = SaveImage.saveImage(fileThumbnail,strDate,userID,itemID,url,"thumbnail.jpg");
-            String dynamicPath3 = SaveImage.saveImage(filePortrait,strDate,userID,itemID,url,"portrait.jpg");
-            String dynamicPath4 = SaveImage.saveImage(fileSquare,strDate,userID,itemID,url,"square.jpg");
-            String dynamicPath5 = SaveImage.saveImage(fileHero,strDate,userID,itemID,url,"hero.jpg");
+            String fullPath = path + "\\" + strDate + "\\" + userID + "\\" + itemID;
+            String dynamicPath = url + "\\" + strDate + "\\" + userID + "\\" + itemID;
 
-            Optional<DonateEntity> donateEntity = saveDonateInfo.saveInfo(dynamicPath1,dynamicPath2,dynamicPath3,dynamicPath4,
-                    dynamicPath5, category, item_name, item_desc, userId);
+            SaveImage.saveImage(fileFullWidth,fullPath,"full-width.jpg");
+            SaveImage.saveImage(fileThumbnail,fullPath,"thumbnail.jpg");
+            SaveImage.saveImage(filePortrait,fullPath,"portrait.jpg");
+            SaveImage.saveImage(fileSquare,fullPath,"square.jpg");
+            SaveImage.saveImage(fileHero,fullPath,"hero.jpg");
+
+            Optional<DonateEntity> donateEntity = saveDonateInfo.saveInfo(dynamicPath, category, item_name, item_desc, userId);
 
             return portalResponse.commonSuccessResponse("Image Uploaded","",donateEntity);
         } else {
             return portalResponse.commonErrorResponse("invalid user", "", "");
         }
-
     }
 
     public void makeDateDirectoryIfNotExist(String url){

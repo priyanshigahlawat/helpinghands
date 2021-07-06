@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ApproveItemRequest {
     private Long itemID;
-    private Long approveStatus;
-    private String message;
+    private Long userID;
+    private String token;
 }

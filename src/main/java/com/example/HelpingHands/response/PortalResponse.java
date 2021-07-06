@@ -28,6 +28,15 @@ public class PortalResponse {
         return portalResponse;
     }
 
+    public static PortalResponse customCountSuccessResponse(String  message, String requestId){
+        PortalResponse portalResponse=new PortalResponse();
+        portalResponse.setStatusCode("200");
+        portalResponse.setMessage(message);
+        portalResponse.setRequestId(requestId);
+
+        return portalResponse;
+    }
+
     public static PortalResponse customSuccessResponse(String message, String requestId, List<DonateEntity> data2){
         PortalResponse portalResponse=new PortalResponse();
         portalResponse.setStatusCode("200");

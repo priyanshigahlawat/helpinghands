@@ -3,7 +3,7 @@ package com.example.HelpingHands.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Entity

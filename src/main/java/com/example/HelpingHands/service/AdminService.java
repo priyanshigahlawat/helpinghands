@@ -4,6 +4,7 @@ import com.example.HelpingHands.DAOImplementation.ApproveItem;
 import com.example.HelpingHands.entity.DonateEntity;
 import com.example.HelpingHands.repository.DonateRepository;
 import com.example.HelpingHands.request.ApproveItemRequest;
+import com.example.HelpingHands.request.RejectItemRequest;
 import com.example.HelpingHands.request.TokenRequest;
 import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.utility.ImageResponse;
@@ -30,6 +31,7 @@ public class AdminService {
     @Autowired
     ImageResponse imageResponse;
 
+
     public PortalResponse fetchData(@RequestBody TokenRequest request){
         try{
             boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
@@ -52,7 +54,27 @@ public class AdminService {
     //===========================================APPROVE ITEMS=============================================
 
     public PortalResponse approveItem(@RequestBody ApproveItemRequest request){
-        Optional<DonateEntity> donateEntity = approveItem.appriveItem(request);
-        return PortalResponse.commonSuccessResponse(request.getMessage(), "",donateEntity);
+        boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
+        if(flag == true){
+            Optional<DonateEntity> donateEntity = approveItem.approveItem(request);
+            return PortalResponse.commonSuccessResponse("Approved", "",donateEntity);
+        }
+        else {
+            return PortalResponse.commonErrorResponse("InvalidUser","","");
+        }
     }
+
+    //===========================================APPROVE ITEMS=============================================
+
+    public PortalResponse rejectItem(@RequestBody RejectItemRequest request){
+        boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
+        if(flag == true){
+            Optional<DonateEntity> donateEntity = approveItem.rejectItem(request);
+            return PortalResponse.commonSuccessResponse(request.getMessage(), "",donateEntity);
+        }
+        else {
+            return PortalResponse.commonErrorResponse("InvalidUser","","");
+        }
+    }
+
 }

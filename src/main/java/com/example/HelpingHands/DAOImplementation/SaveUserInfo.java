@@ -20,6 +20,7 @@ public class SaveUserInfo {
         userEntity.setPhone(req.getPhone());
         userEntity.setPassword(req.getPassword());
         userEntity.setAdminStatus(0L);
+        userEntity.setActiveStatus(1L);
         userRepository.save(userEntity);
     }
 }

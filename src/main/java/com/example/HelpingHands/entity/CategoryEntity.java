@@ -17,4 +17,8 @@ public class CategoryEntity {
     @Column
     private String categoryName;
 
+    @OneToMany(targetEntity = DonateEntity.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "categoryID", referencedColumnName = "categoryID")
+    private List<DonateEntity>getCategoryID;
+
 }

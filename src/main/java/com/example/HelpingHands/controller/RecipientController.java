@@ -32,6 +32,9 @@ public class RecipientController {
     @Autowired
     LoginViaSmsService loginSmsService;
 
+    @Autowired
+    LogoutService logoutService;
+
     @PostMapping("/register")
     public PortalResponse saveInfo(@RequestBody @Valid RegisterRequest req){
         return registerService.saveInfo(req);
@@ -72,4 +75,8 @@ public class RecipientController {
         return loginSmsService.verifyOtp(req);
     }
 
+    @PostMapping("/logoutUser")
+    public PortalResponse logoutUser(@RequestBody LogoutRequest req){
+        return logoutService.logoutUser(req);
+    }
 }

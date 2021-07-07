@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,20 +48,14 @@ public class CategoryService {
 
     public PortalResponse categoryInfo(@RequestBody CategoryRequest req) {
         PortalResponse portalResponse=new PortalResponse();
-        boolean flag = verifyToken.verifyToken(req.getUserID(), req.getToken());
-        if(flag == true){
+//        boolean flag = verifyToken.verifyToken(req.getUserID(), req.getToken());
+//        if(flag == true){
             try {
                 if (req.getCategoryName().equals("All")) {
-                    List<DonateEntity> donateEntity = donateRepository.findAll(Sort.by("categoryID").ascending());
-                    List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntity);
-                    Long maxCategortID = categoryRepository.max();
 
-                    List<List<DonateEntity>> itemList = new ArrayList<List<DonateEntity>>();
-                    for(int i=1; i<=maxCategortID; i++){
-                        List<DonateEntity> donateEntity1 = donateRepository.getCategoryId((long) i);
-                        itemList.add(donateEntity1);
-                    }
-                    return portalResponse.commonSuccessResponse("Fetched all records", "", itemList);
+                    List<CategoryEntity> categoryEntity = categoryRepository.findAll();
+
+                    return portalResponse.commonSuccessResponse("Fetched all records", "", categoryEntity);
                 }
                 else {
                     Optional<CategoryEntity> categoryEntity = categoryRepository.findById(req.getCategoryID());
@@ -77,10 +72,10 @@ public class CategoryService {
                 System.out.println(e.getMessage());
                 return  portalResponse.commonErrorResponse("No matched record found","","");
             }
-        }
-        else {
-            return PortalResponse.commonErrorResponse("InvalidUser","","");
-        }
+//        }
+//        else {
+//            return PortalResponse.commonErrorResponse("InvalidUser","","");
+//        }
         return null;
     }
 
@@ -99,7 +94,7 @@ public class CategoryService {
             Date month1 = Date.from(currentDateMinus1Month.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date month6 = Date.from(currentDateMinus6Months.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String strToday = dateFormat.format(today);
             String strWeek1 = dateFormat.format(week1);
             String strMonth1 = dateFormat.format(month1);

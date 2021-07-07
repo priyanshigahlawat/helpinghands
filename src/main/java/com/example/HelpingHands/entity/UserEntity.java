@@ -39,6 +39,9 @@ public class UserEntity {
     private Long adminStatus;
 
     @Column
+    private Long activeStatus;
+
+    @Column
     private Long adminID;
 
     @OneToMany(targetEntity = DonateEntity.class, cascade = CascadeType.ALL)

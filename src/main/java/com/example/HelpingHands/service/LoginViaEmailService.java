@@ -19,7 +19,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Optional;
 
 @Service

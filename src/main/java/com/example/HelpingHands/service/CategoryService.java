@@ -94,7 +94,7 @@ public class CategoryService {
             Date month1 = Date.from(currentDateMinus1Month.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date month6 = Date.from(currentDateMinus6Months.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String strToday = dateFormat.format(today);
             String strWeek1 = dateFormat.format(week1);
             String strMonth1 = dateFormat.format(month1);

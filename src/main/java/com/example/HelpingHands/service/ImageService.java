@@ -62,17 +62,14 @@ public class ImageService {
         boolean flag = verifyToken.verifyToken(userId,token);
         PortalResponse portalResponse = new PortalResponse();
         if(flag == true){
-            Optional<CategoryEntity> categoryEntity = categoryRepository.findById(category);
-
-            DonateEntity donateEntity1 = new DonateEntity();
-            donateRepository.save(donateEntity1);
-
             String staticPath = "src\\main\\resources\\static\\Photos";
+            DonateEntity donateEntity1= new DonateEntity();
+            donateRepository.save(donateEntity1);
 
             File file = new File(staticPath);
             String path = file.getAbsolutePath();
 
-            String itemID = String.valueOf(donateRepository.max());
+            String itemID = String.valueOf(donateRepository.maxItemID());
             String userID = String.valueOf(userId);
 
             Date date = new Date();

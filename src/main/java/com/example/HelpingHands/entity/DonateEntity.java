@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.*;
 import java.util.List;
+import java.util.Date;
 
 @Data
 @Entity

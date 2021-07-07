@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.*;
+import java.util.Date;
 
 @Data
 @Entity

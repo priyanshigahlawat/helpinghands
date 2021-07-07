@@ -31,8 +31,11 @@ public class SaveDonateInfo {
                                            String item_desc,
                                            Long userID){
         Optional<DonateEntity> donateEntity = donateRepository.findById(donateRepository.maxItemID());
+        System.out.println("max" + donateRepository.maxItemID());
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(category);
         List<DonateEntity> donateEntityList = categoryEntity.get().getGetCategoryID();
+
+        System.out.println("donateEntity:  " + donateEntity);
 
         donateEntity.get().setFull_width(dynamicPath+"\\full-width.jpg");
         donateEntity.get().setThumbnail(dynamicPath+"\\thumbnail.jpg");

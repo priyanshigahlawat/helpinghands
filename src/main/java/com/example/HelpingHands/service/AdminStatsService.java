@@ -70,8 +70,9 @@ public class AdminStatsService {
         boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
         if(flag == true){
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            String strToday = dateFormat.format(request.getDate());
+           String strToday = dateFormat.format(request.getDate());
             Long maxDonorsOnADay = donateRepository.fetchDonorsADay(strToday);
+
             return PortalResponse.customCountSuccessResponse(String.valueOf(maxDonorsOnADay),"");
         }
         else {
@@ -84,7 +85,7 @@ public class AdminStatsService {
     public PortalResponse totalRegistersOnADay (@RequestBody DonorsRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
         if(flag == true){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             String strToday = dateFormat.format(request.getDate());
             Long maxRegistersOnADay = userRepository.fetchRegistersADay(strToday);
             return PortalResponse.customCountSuccessResponse(String.valueOf(maxRegistersOnADay),"");

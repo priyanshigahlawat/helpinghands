@@ -48,8 +48,6 @@ public class CategoryService {
 
     public PortalResponse categoryInfo(@RequestBody CategoryRequest req) {
         PortalResponse portalResponse=new PortalResponse();
-//        boolean flag = verifyToken.verifyToken(req.getUserID(), req.getToken());
-//        if(flag == true){
             try {
                 if (req.getCategoryName().equals("All")) {
 
@@ -72,10 +70,6 @@ public class CategoryService {
                 System.out.println(e.getMessage());
                 return  portalResponse.commonErrorResponse("No matched record found","","");
             }
-//        }
-//        else {
-//            return PortalResponse.commonErrorResponse("InvalidUser","","");
-//        }
         return null;
     }
 

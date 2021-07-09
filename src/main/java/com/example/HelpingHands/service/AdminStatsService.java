@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Service
 public class AdminStatsService {
@@ -69,8 +72,10 @@ public class AdminStatsService {
     public PortalResponse totalDonorsOnADay (@RequestBody DonorsRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
         if(flag == true){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            String strToday = dateFormat.format(request.getDate());
+            LocalDate currentDate = LocalDate.now();
+            Date today = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String strToday = dateFormat.format(today);
             Long maxDonorsOnADay = donateRepository.fetchDonorsADay(strToday);
             return PortalResponse.customCountSuccessResponse(String.valueOf(maxDonorsOnADay),"");
         }
@@ -84,8 +89,10 @@ public class AdminStatsService {
     public PortalResponse totalRegistersOnADay (@RequestBody DonorsRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
         if(flag == true){
+            LocalDate currentDate = LocalDate.now();
+            Date today = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String strToday = dateFormat.format(request.getDate());
+            String strToday = dateFormat.format(today);
             Long maxRegistersOnADay = userRepository.fetchRegistersADay(strToday);
             return PortalResponse.customCountSuccessResponse(String.valueOf(maxRegistersOnADay),"");
         }

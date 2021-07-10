@@ -7,6 +7,4 @@ import lombok.Data;
 public class CategoryRequest {
     private Long categoryID;
     private  String categoryName;
-    private Long userID;
-    private String token;
 }

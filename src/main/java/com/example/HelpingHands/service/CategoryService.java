@@ -7,10 +7,7 @@ import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.repository.CategoryRepository;
 import com.example.HelpingHands.repository.DonateRepository;
 import com.example.HelpingHands.repository.UserRepository;
-import com.example.HelpingHands.request.CategoryRequest;
-import com.example.HelpingHands.request.DateRequest;
-import com.example.HelpingHands.request.LoginRequest;
-import com.example.HelpingHands.request.TokenRequest;
+import com.example.HelpingHands.request.*;
 import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.utility.ImageResponse;
 import com.example.HelpingHands.utility.VerifyToken;
@@ -48,8 +45,6 @@ public class CategoryService {
 
     public PortalResponse categoryInfo(@RequestBody CategoryRequest req) {
         PortalResponse portalResponse=new PortalResponse();
-//        boolean flag = verifyToken.verifyToken(req.getUserID(), req.getToken());
-//        if(flag == true){
             try {
                 if (req.getCategoryName().equals("All")) {
 
@@ -72,10 +67,6 @@ public class CategoryService {
                 System.out.println(e.getMessage());
                 return  portalResponse.commonErrorResponse("No matched record found","","");
             }
-//        }
-//        else {
-//            return PortalResponse.commonErrorResponse("InvalidUser","","");
-//        }
         return null;
     }
 
@@ -115,4 +106,6 @@ public class CategoryService {
             return PortalResponse.commonErrorResponse("InvalidUser","","");
         }
     }
-}
+
+
+    }

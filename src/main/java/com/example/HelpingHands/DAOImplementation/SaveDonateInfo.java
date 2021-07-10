@@ -6,6 +6,7 @@ import com.example.HelpingHands.repository.CategoryRepository;
 import com.example.HelpingHands.repository.DonateRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,14 @@ public class SaveDonateInfo {
         List<DonateEntity> donateEntityList = categoryEntity.get().getGetCategoryID();
 
         System.out.println("donateEntity:  " + donateEntity);
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
+        try {
+            date = dateFormat.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         donateEntity.get().setFull_width(dynamicPath+"\\full-width.jpg");
         donateEntity.get().setThumbnail(dynamicPath+"\\thumbnail.jpg");
@@ -47,7 +56,7 @@ public class SaveDonateInfo {
         donateEntity.get().setUserID(userID);
         donateEntity.get().setAprrovedStatus(0L);
         donateEntity.get().setExpireStatus(0L);
-        donateEntity.get().setDate(new Date());
+        donateEntity.get().setDate(date);
         donateRepository.save(donateEntity.get());
 
         donateEntityList.add(donateEntity.get());

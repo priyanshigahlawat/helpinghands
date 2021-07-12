@@ -39,10 +39,10 @@ public class AdminService {
 
                 List<DonateEntity> donateEntities =  donateRepository.getItems();
 
-                List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntities);
+//                List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntities);
 
                 System.out.println(donateEntities);
-                return PortalResponse.customSuccessResponse("Fetched data","",donateEntityList);
+                return PortalResponse.customSuccessResponse("Fetched data","",donateEntities);
             }
             else {
                 return PortalResponse.commonErrorResponse("InvalidUser","","");
@@ -64,7 +64,7 @@ public class AdminService {
         }
     }
 
-    //===========================================APPROVE ITEMS=============================================
+    //===========================================REJECT ITEMS=============================================
 
     public PortalResponse rejectItem(@RequestBody RejectItemRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());

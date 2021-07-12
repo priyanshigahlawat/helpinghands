@@ -27,7 +27,7 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
     @Query(value = "SELECT * FROM donate ", nativeQuery = true)
     public List<DonateEntity> fetchAllItems();
 
-    @Query(value = "SELECT * FROM donate where userID IN (SELECT userID FROM user WHERE admin_status = 1 and aprroved_status=1 and expire_status=0)", nativeQuery = true)
+    @Query(value = "SELECT * FROM donate WHERE aprroved_status=0 and expire_status=0", nativeQuery = true)
     public List<DonateEntity> getItems();
 
     @Query(value = "SELECT * FROM donate where date >= :date", nativeQuery = true)
@@ -35,4 +35,7 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
 
     @Query(value = "SELECT count( * ) FROM donate where date = :date", nativeQuery = true)
     public Long fetchDonorsADay(String date);
+
+    @Query(value = "SELECT * FROM donate where userid = :userid", nativeQuery = true)
+    public List<DonateEntity> fetchUserItems(Long userid);
 }

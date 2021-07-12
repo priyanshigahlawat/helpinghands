@@ -35,6 +35,9 @@ public class RecipientController {
     @Autowired
     LogoutService logoutService;
 
+    @Autowired
+    UserItemsService userItemsService;
+
     @PostMapping("/register")
     public PortalResponse saveInfo(@RequestBody @Valid RegisterRequest req){
         return registerService.saveInfo(req);
@@ -78,5 +81,10 @@ public class RecipientController {
     @PostMapping("/logoutUser")
     public PortalResponse logoutUser(@RequestBody LogoutRequest req){
         return logoutService.logoutUser(req);
+    }
+
+    @PostMapping("/fetchUserItems")
+    public PortalResponse myItems(@RequestBody TokenRequest req){
+        return userItemsService.myItems(req);
     }
 }

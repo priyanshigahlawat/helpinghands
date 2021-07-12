@@ -25,7 +25,7 @@ public class ApproveItem {
 
     public Optional<DonateEntity> rejectItem(RejectItemRequest request){
         Optional<DonateEntity> donateEntity = donateRepository.findById(request.getItemID());
-        donateEntity.get().setAprrovedStatus(0L);
+        donateEntity.get().setExpireStatus(1L);
         donateEntity.get().setAdminMessage(request.getMessage());
         donateRepository.save(donateEntity.get());
         return donateEntity;

@@ -5,6 +5,7 @@ import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.service.AdminService;
 import com.example.HelpingHands.service.AdminStatsService;
 import com.example.HelpingHands.service.CreateAdminService;
+import com.example.HelpingHands.service.LockUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +22,11 @@ public class AdminController {
     @Autowired
     CreateAdminService createAdminService;
 
-
     @Autowired
     AdminStatsService adminStatsService;
+
+    @Autowired
+    LockUserService lockUserService;
 
     @PostMapping("/fetchItem")
     public PortalResponse fetchData(@RequestBody TokenRequest request){
@@ -40,9 +43,24 @@ public class AdminController {
         return adminService.rejectItem(request);
     }
 
+    @PostMapping("/fetchUsers")
+    public PortalResponse fetchUsers(@RequestBody TokenRequest request){
+        return createAdminService.fetchUsers(request);
+    }
+
+    @PostMapping("/fetchTotalUsers")
+    public PortalResponse fetchTotalUsers(@RequestBody TokenRequest request){
+        return createAdminService.fetchTotalUsers(request);
+    }
+
     @PostMapping("/createAdmin")
     public PortalResponse createAdmin(@RequestBody CreateAdminRequest request){
         return  createAdminService.createAdmin(request);
+    }
+
+    @PostMapping("/removeAdmin")
+    public PortalResponse removeAdmin(@RequestBody CreateAdminRequest request){
+        return createAdminService.removeAdmin(request);
     }
 
     @PostMapping("/totalRegisters")
@@ -68,5 +86,15 @@ public class AdminController {
     @PostMapping("/totalRegistersOnADay")
     public PortalResponse totalRegistersOnADay(@RequestBody DonorsRequest request){
         return adminStatsService.totalRegistersOnADay(request);
+    }
+
+    @PostMapping("/lockUser")
+    public PortalResponse lockUser(@RequestBody LockUserRequest request){
+        return lockUserService.lockUser(request);
+    }
+
+    @PostMapping("/unlockUser")
+    public PortalResponse unlockUser(@RequestBody LockUserRequest request){
+        return lockUserService.unlockUser(request);
     }
 }

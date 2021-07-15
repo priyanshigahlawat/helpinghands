@@ -47,8 +47,10 @@ public class AdminService {
             else {
                 return PortalResponse.commonErrorResponse("InvalidUser","","");
             }
-        } catch(Exception ex){}
-        return null;
+        } catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return  PortalResponse.commonErrorResponse("No matched record found","","");
+        }
     }
 
     //===========================================APPROVE ITEMS=============================================

@@ -1,17 +1,16 @@
 package com.example.HelpingHands.controller;
 
-import com.example.HelpingHands.request.CategoryRequest;
-import com.example.HelpingHands.request.DateRequest;
-import com.example.HelpingHands.request.DonorsRequest;
-import com.example.HelpingHands.request.TokenRequest;
+import com.example.HelpingHands.request.*;
 import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.service.AdminStatsService;
 import com.example.HelpingHands.service.CategoryService;
 import com.example.HelpingHands.service.ImageService;
+import com.example.HelpingHands.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,6 +23,10 @@ public class DonorController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    UpdateService updateService;
+
 
 
     @PostMapping("/uploadImage")
@@ -48,6 +51,16 @@ public class DonorController {
     @PostMapping("/fetchDateWise")
     public PortalResponse fetchDateWise(@RequestBody DateRequest request){
         return categoryService.fetchDateWise(request);
+    }
+
+    @PostMapping("/updateInformation")
+    public PortalResponse updateInformation(@RequestBody UpdateRequest req){
+        return updateService.updateInformation(req);
+    }
+
+    @PostMapping("/updatePassword")
+    public PortalResponse updatePassword(@RequestBody PasswordRequest req){
+        return updateService.updatePassword(req);
     }
 
 

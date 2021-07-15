@@ -34,7 +34,7 @@ public class LoginService {
             PortalResponse portalResponse = new PortalResponse();
             UserEntity userEntity1 = userRepository.findByEmail(req.getEmail());
 
-            if(userEntity1 != null){
+            if(userEntity1 != null && userEntity1.getActiveStatus() == 1){
                 if(userEntity1.getPassword().equals(req.getPassword())){
 
                     String token = createToken.generateToken(req.getEmail());

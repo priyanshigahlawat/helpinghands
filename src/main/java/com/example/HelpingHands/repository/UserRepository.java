@@ -19,4 +19,13 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
     @Query(value = "SELECT max(itemID) FROM user where date = :date", nativeQuery = true)
     public Long fetchRegistersADay(String date);
+
+    @Query(value = "SELECT * FROM user where active_status=1", nativeQuery = true)
+    public List<UserEntity> fetchUsers();
+
+    @Query(value = "SELECT * FROM user", nativeQuery = true)
+    public List<UserEntity> fetchLockUsers();
+
+//    @Query(value = "SELECT * FROM user WHERE userID IN(SELECT requestID FROM request WHERE donorID = :donorID)")
+//    public List<UserEntity> fetchUserInbox(Long donorID);
 }

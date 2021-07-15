@@ -38,6 +38,9 @@ public class RecipientController {
     @Autowired
     UserItemsService userItemsService;
 
+    @Autowired
+    UserRequestService userRequestService;
+
     @PostMapping("/register")
     public PortalResponse saveInfo(@RequestBody @Valid RegisterRequest req){
         return registerService.saveInfo(req);
@@ -86,5 +89,15 @@ public class RecipientController {
     @PostMapping("/fetchUserItems")
     public PortalResponse myItems(@RequestBody TokenRequest req){
         return userItemsService.myItems(req);
+    }
+
+    @PostMapping("/removeUserItem")
+    public PortalResponse removeItems(@RequestBody RemoveItemRequest req){
+        return  userItemsService.removeItems(req);
+    }
+
+    @PostMapping("/fetchUserInbox")
+    public PortalResponse fetchInboxItems(@RequestBody TokenRequest req){
+        return userRequestService.myItems(req);
     }
 }

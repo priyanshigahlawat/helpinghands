@@ -3,8 +3,8 @@ package com.example.HelpingHands.request;
 import lombok.Data;
 
 @Data
-public class LockUserRequest {
+public class RemoveItemRequest {
     private Long userID;
-    private Long adminID;
     private String token;
+    private Long itemID;
 }

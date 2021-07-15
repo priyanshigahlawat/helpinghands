@@ -77,6 +77,7 @@ public class AdminStatsService {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String strToday = dateFormat.format(today);
             Long maxDonorsOnADay = donateRepository.fetchDonorsADay(strToday);
+
             return PortalResponse.customCountSuccessResponse(String.valueOf(maxDonorsOnADay),"");
         }
         else {

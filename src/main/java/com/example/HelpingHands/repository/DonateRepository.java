@@ -2,8 +2,7 @@ package com.example.HelpingHands.repository;
 
 import com.example.HelpingHands.entity.DonateEntity;
 
-import java.time.LocalDate;
-
+import com.example.HelpingHands.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,6 +11,8 @@ import java.util.*;
 
 @Repository
 public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
+    public DonateEntity findByItemID(Long itemID);
+
     @Query(value = "SELECT count( * ) FROM donate", nativeQuery = true)
     public Long max();
 

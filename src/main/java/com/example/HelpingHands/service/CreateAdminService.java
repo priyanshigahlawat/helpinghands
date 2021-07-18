@@ -5,6 +5,7 @@ import com.example.HelpingHands.repository.UserRepository;
 import com.example.HelpingHands.request.CreateAdminRequest;
 import com.example.HelpingHands.request.TokenRequest;
 import com.example.HelpingHands.response.PortalResponse;
+import com.example.HelpingHands.utility.MailUtility;
 import com.example.HelpingHands.utility.VerifyToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class CreateAdminService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    MailUtility mailUtility;
 
     public PortalResponse fetchUsers(@RequestBody TokenRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
@@ -55,6 +59,9 @@ public class CreateAdminService {
             userEntity.get().setAdminStatus(1L);
             userEntity.get().setAdminID(request.getAdminID());
             userRepository.save(userEntity.get());
+            String email = userEntity.get().getEmail();
+            String mailDesc = "You are now an admin";
+            mailUtility.sendMail(email, mailDesc);
 
             return PortalResponse.commonSuccessResponse("Made admin","",userEntity);
         }
@@ -72,6 +79,9 @@ public class CreateAdminService {
             userEntity.get().setAdminStatus(0L);
             userEntity.get().setAdminID(request.getAdminID());
             userRepository.save(userEntity.get());
+            String email = userEntity.get().getEmail();
+            String mailDesc = "You are no longer an admin";
+            mailUtility.sendMail(email, mailDesc);
 
             return PortalResponse.commonSuccessResponse("Removed admin","",userEntity);
         }

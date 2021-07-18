@@ -5,13 +5,8 @@ import com.example.HelpingHands.response.PortalResponse;
 import com.example.HelpingHands.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.sound.sampled.Port;
 import javax.validation.Valid;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -92,12 +87,17 @@ public class RecipientController {
     }
 
     @PostMapping("/removeUserItem")
-    public PortalResponse removeItems(@RequestBody RemoveItemRequest req){
+    public PortalResponse removeItems(@RequestBody AcceptItemRequest req){
         return  userItemsService.removeItems(req);
     }
 
     @PostMapping("/fetchUserInbox")
     public PortalResponse fetchInboxItems(@RequestBody TokenRequest req){
-        return userRequestService.myItems(req);
+        return userRequestService.myInbox(req);
+    }
+
+    @PostMapping("/acceptUserInboxItem")
+    public PortalResponse acceptInboxItems(@RequestBody AcceptItemRequest req){
+        return userRequestService.acceptRequest(req);
     }
 }

@@ -46,7 +46,7 @@ public class RegisterService {
         }
     }
 
-    //=========================================VERIFY OTP===============================================================
+    //====================================================VERIFY OTP====================================================
 
     public PortalResponse verifyOtp(@RequestBody VerifyMailOtp req){
         PortalResponse portalResponse = new PortalResponse();

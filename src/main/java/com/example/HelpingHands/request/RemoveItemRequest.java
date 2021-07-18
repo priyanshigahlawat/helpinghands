@@ -6,5 +6,5 @@ import lombok.Data;
 public class RemoveItemRequest {
     private Long userID;
     private String token;
-    private Long itemID;
+    private Long id;
 }

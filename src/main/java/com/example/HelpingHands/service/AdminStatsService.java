@@ -67,6 +67,45 @@ public class AdminStatsService {
         }
     }
 
+    //============================TOTAL NO OF LOCKED USERS==============================================================
+
+    public PortalResponse totalLocked (@RequestBody TokenRequest request){
+        boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
+        if(flag == true){
+            Long maxPendingRequests = userRepository.fetchLockedUsers();
+            return PortalResponse.customCountSuccessResponse(String.valueOf(maxPendingRequests),"");
+        }
+        else {
+            return PortalResponse.commonErrorResponse("invalid user", "", "");
+        }
+    }
+
+    //============================TOTAL NO OF APPROVED REQUESTS=========================================================
+
+    public PortalResponse totalApprovedRequests (@RequestBody TokenRequest request){
+        boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
+        if(flag == true){
+            Long maxPendingRequests = donateRepository.getTotalApproved();
+            return PortalResponse.customCountSuccessResponse(String.valueOf(maxPendingRequests),"");
+        }
+        else {
+            return PortalResponse.commonErrorResponse("invalid user", "", "");
+        }
+    }
+
+    //============================TOTAL NO OF REJECTED REQUESTS=========================================================
+
+    public PortalResponse totalRejectedRequests (@RequestBody TokenRequest request){
+        boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
+        if(flag == true){
+            Long maxPendingRequests = donateRepository.getTotalRejected();
+            return PortalResponse.customCountSuccessResponse(String.valueOf(maxPendingRequests),"");
+        }
+        else {
+            return PortalResponse.commonErrorResponse("invalid user", "", "");
+        }
+    }
+
     //============================TOTAL NO OF DONATES ON A PARTICULAR DATE==============================================
 
     public PortalResponse totalDonorsOnADay (@RequestBody DonorsRequest request){

@@ -23,6 +23,12 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
     @Query(value = "SELECT * FROM user where active_status=1", nativeQuery = true)
     public List<UserEntity> fetchUsers();
 
+    @Query(value = "SELECT * FROM user where active_status=1", nativeQuery = true)
+    public Long fetchLockedUsers();
+
     @Query(value = "SELECT * FROM user", nativeQuery = true)
+    public List<UserEntity> fetchTotalUsers();
+
+    @Query(value = "SELECT * FROM user where active_status=0", nativeQuery = true)
     public List<UserEntity> fetchLockUsers();
 }

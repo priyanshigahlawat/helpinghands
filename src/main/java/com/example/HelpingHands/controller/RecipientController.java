@@ -36,6 +36,9 @@ public class RecipientController {
     @Autowired
     UserRequestService userRequestService;
 
+    @Autowired
+    ItemDataService itemDataService;
+
     @PostMapping("/register")
     public PortalResponse saveInfo(@RequestBody @Valid RegisterRequest req){
         return registerService.saveInfo(req);
@@ -99,5 +102,10 @@ public class RecipientController {
     @PostMapping("/acceptUserInboxItem")
     public PortalResponse acceptInboxItems(@RequestBody AcceptItemRequest req){
         return userRequestService.acceptRequest(req);
+    }
+
+    @PostMapping("/fetchItemData")
+    public PortalResponse fetchItemData(@RequestBody ItemDataRequest request){
+        return itemDataService.itemData(request);
     }
 }

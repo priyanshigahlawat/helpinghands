@@ -42,6 +42,19 @@ public class CreateAdminService {
     public PortalResponse fetchTotalUsers(@RequestBody TokenRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
         if(flag == true){
+            List<UserEntity> userEntityList = userRepository.fetchTotalUsers();
+            return PortalResponse.commonSuccessResponse("Fetched record","",userEntityList);
+        }
+        else {
+            return PortalResponse.commonErrorResponse("Invalid User","","");
+        }
+    }
+
+    //==========================================FETCH TOTAL USERS========================================================
+
+    public PortalResponse fetchTotalLockUsers(@RequestBody TokenRequest request){
+        boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
+        if(flag == true){
             List<UserEntity> userEntityList = userRepository.fetchLockUsers();
             return PortalResponse.commonSuccessResponse("Fetched record","",userEntityList);
         }

@@ -53,6 +53,11 @@ public class AdminController {
         return createAdminService.fetchTotalUsers(request);
     }
 
+    @PostMapping("/fetchLockUsers")
+    public PortalResponse fetchLockUsers(@RequestBody TokenRequest request){
+        return createAdminService.fetchTotalLockUsers(request);
+    }
+
     @PostMapping("/createAdmin")
     public PortalResponse createAdmin(@RequestBody CreateAdminRequest request){
         return  createAdminService.createAdmin(request);
@@ -76,6 +81,21 @@ public class AdminController {
     @PostMapping("/totalPendingRequests")
     public PortalResponse totalPendingRequests(@RequestBody TokenRequest request){
         return adminStatsService.totalPendingRequests(request);
+    }
+
+    @PostMapping("/totalApprovedRequests")
+    public PortalResponse totalApprovedRequests(@RequestBody TokenRequest request){
+        return adminStatsService.totalApprovedRequests(request);
+    }
+
+    @PostMapping("/totalRejectedRequests")
+    public PortalResponse totalRejectedRequests(@RequestBody TokenRequest request){
+        return adminStatsService.totalRejectedRequests(request);
+    }
+
+    @PostMapping("/totalLockedUsers")
+    public PortalResponse totalLockedUsers(@RequestBody TokenRequest request){
+        return adminStatsService.totalLocked(request);
     }
 
     @PostMapping("/totalDonorsOnADay")

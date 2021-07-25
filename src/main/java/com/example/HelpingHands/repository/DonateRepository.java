@@ -13,7 +13,7 @@ import java.util.*;
 public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
     public DonateEntity findByItemID(Long itemID);
 
-    @Query(value = "SELECT count( * ) FROM donate", nativeQuery = true)
+    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=1 and expire_status=0", nativeQuery = true)
     public Long max();
 
     @Query(value = "SELECT max(itemID) FROM donate", nativeQuery = true)
@@ -22,8 +22,14 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
     @Query(value = "SELECT * FROM donate where categoryID= :id and aprroved_status=1 and expire_status=0", nativeQuery = true)
     public List<DonateEntity> getCategoryId(Long id);
 
-    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=0", nativeQuery = true)
+    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=0 and expire_status=0", nativeQuery = true)
     public Long getPendingRequests();
+
+    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=1 and expire_status=0", nativeQuery = true)
+    public Long getTotalApproved();
+
+    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=0 and expire_status=1", nativeQuery = true)
+    public Long getTotalRejected();
 
     @Query(value = "SELECT * FROM donate ", nativeQuery = true)
     public List<DonateEntity> fetchAllItems();
@@ -34,7 +40,7 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
     @Query(value = "SELECT * FROM donate where date >= :date", nativeQuery = true)
     public List<DonateEntity> fetchDateWiseItems(String date);
 
-    @Query(value = "SELECT count( * ) FROM donate where date = :date", nativeQuery = true)
+    @Query(value = "SELECT count( * ) FROM donate where date = :date and aprroved_status=1 and expire_status=0", nativeQuery = true)
     public Long fetchDonorsADay(String date);
 
     @Query(value = "SELECT * FROM donate where userid = :userid", nativeQuery = true)

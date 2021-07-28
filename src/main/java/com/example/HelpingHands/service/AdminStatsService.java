@@ -2,6 +2,7 @@ package com.example.HelpingHands.service;
 
 import com.example.HelpingHands.repository.DonateRepository;
 import com.example.HelpingHands.repository.UserRepository;
+import com.example.HelpingHands.request.DonationRequest;
 import com.example.HelpingHands.request.DonorsRequest;
 import com.example.HelpingHands.request.TokenRequest;
 import com.example.HelpingHands.response.PortalResponse;
@@ -80,6 +81,19 @@ public class AdminStatsService {
         }
     }
 
+    //============================TOTAL NO OF ACTIVE USERS==============================================================
+
+    public PortalResponse totalActive (@RequestBody TokenRequest request){
+        boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
+        if(flag == true){
+            Long maxPendingRequests = userRepository.fetchActiveUsers();
+            return PortalResponse.customCountSuccessResponse(String.valueOf(maxPendingRequests),"");
+        }
+        else {
+            return PortalResponse.commonErrorResponse("invalid user", "", "");
+        }
+    }
+
     //============================TOTAL NO OF APPROVED REQUESTS=========================================================
 
     public PortalResponse totalApprovedRequests (@RequestBody TokenRequest request){
@@ -135,6 +149,19 @@ public class AdminStatsService {
             String strToday = dateFormat.format(today);
             Long maxRegistersOnADay = userRepository.fetchRegistersADay(strToday);
             return PortalResponse.customCountSuccessResponse(String.valueOf(maxRegistersOnADay),"");
+        }
+        else {
+            return PortalResponse.commonErrorResponse("invalid user", "", "");
+        }
+    }
+
+    //============================TOTAL NO OF DONATIONS PER PERSON======================================================
+
+    public PortalResponse totalDonations (@RequestBody DonationRequest request){
+        boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
+        if(flag == true){
+            Long donations = donateRepository.getUserDonations(request.getDonorID());
+            return PortalResponse.customCountSuccessResponse(String.valueOf(donations),"");
         }
         else {
             return PortalResponse.commonErrorResponse("invalid user", "", "");

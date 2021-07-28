@@ -25,6 +25,15 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
     @Query(value = "SELECT count( * ) FROM donate where aprroved_status=0 and expire_status=0", nativeQuery = true)
     public Long getPendingRequests();
 
+    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=1 and expire_status=1 and userid = :donorid", nativeQuery = true)
+    public Long getUserDonations(Long donorid);
+
+    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=1 and userid = :donorid", nativeQuery = true)
+    public Long getUserAcceptedRequest(Long donorid);
+
+    @Query(value = "SELECT count( * ) FROM donate where aprroved_status=0 and expire_status=1 and userid = :donorid", nativeQuery = true)
+    public Long getUserRejectedRequest(Long donorid);
+
     @Query(value = "SELECT count( * ) FROM donate where aprroved_status=1 and expire_status=0", nativeQuery = true)
     public Long getTotalApproved();
 
@@ -45,4 +54,7 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
 
     @Query(value = "SELECT * FROM donate where userid = :userid", nativeQuery = true)
     public List<DonateEntity> fetchUserItems(Long userid);
+
+    @Query(value = "SELECT * FROM donate", nativeQuery = true)
+    public List<DonateEntity> listOfDonations();
 }

@@ -20,4 +20,13 @@ public class RequestEntity {
     @Column
     private Date dateOfApproval;
 
+    @Column
+    private Long itemID;
+
+    @Column
+    private Long reqID;
+
+    @Column
+    private Long donorID;
+
 }

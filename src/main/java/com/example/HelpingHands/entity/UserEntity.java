@@ -48,14 +48,6 @@ public class UserEntity {
     @JoinColumn(name = "adminID", referencedColumnName = "userID")
     private List<DonateEntity>getAdminID;
 
-    @OneToMany(targetEntity = RequestEntity.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "reqID", referencedColumnName = "userID")
-    private List<RequestEntity>getReqID;
-
-    @OneToMany(targetEntity = RequestEntity.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "donorID", referencedColumnName = "userID")
-    private List<RequestEntity>getDonorID;
-
     @OneToMany(targetEntity = OtpEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "userID", referencedColumnName = "userID")
     private List<OtpEntity>getOtpID;

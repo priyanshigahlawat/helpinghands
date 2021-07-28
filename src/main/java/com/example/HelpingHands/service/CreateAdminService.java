@@ -1,6 +1,9 @@
 package com.example.HelpingHands.service;
 
+import com.example.HelpingHands.entity.InboxRecord;
 import com.example.HelpingHands.entity.UserEntity;
+import com.example.HelpingHands.entity.UsersRecord;
+import com.example.HelpingHands.repository.DonateRepository;
 import com.example.HelpingHands.repository.UserRepository;
 import com.example.HelpingHands.request.CreateAdminRequest;
 import com.example.HelpingHands.request.TokenRequest;
@@ -26,6 +29,9 @@ public class CreateAdminService {
     @Autowired
     MailUtility mailUtility;
 
+    @Autowired
+    DonateRepository donateRepository;
+
     public PortalResponse fetchUsers(@RequestBody TokenRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
         if(flag == true){
@@ -43,7 +49,18 @@ public class CreateAdminService {
         boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
         if(flag == true){
             List<UserEntity> userEntityList = userRepository.fetchTotalUsers();
-            return PortalResponse.commonSuccessResponse("Fetched record","",userEntityList);
+            List<UsersRecord> userRecordList = new ArrayList<UsersRecord>();
+
+            for (int i = 0; i < userEntityList.size(); ++i){
+                UserEntity userEntity = userEntityList.get(i);
+                userRecordList.add(new UsersRecord());
+                userRecordList.get(i).setUserEntity(userEntity);
+                userRecordList.get(i).setTotalDonations(donateRepository.getUserDonations(userEntity.getUserID()));
+                userRecordList.get(i).setAcceptedReq(donateRepository.getUserAcceptedRequest(userEntity.getUserID()));
+                userRecordList.get(i).setRejectedReq(donateRepository.getUserRejectedRequest(userEntity.getUserID()));
+            }
+
+            return PortalResponse.commonSuccessResponse("Fetched record","",userRecordList);
         }
         else {
             return PortalResponse.commonErrorResponse("Invalid User","","");

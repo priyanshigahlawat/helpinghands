@@ -1,6 +1,7 @@
 package com.example.HelpingHands.service;
 
 import com.example.HelpingHands.entity.DonateEntity;
+import com.example.HelpingHands.entity.InboxRecord;
 import com.example.HelpingHands.entity.RequestEntity;
 import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.repository.DonateRepository;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
+import java.util.*;
 import java.util.Optional;
 
 @Service
@@ -36,12 +37,38 @@ public class UserRequestService {
     @Autowired
     MailUtility mailUtility;
 
+    //=============================================INBOX RECORD=========================================================
+
     public PortalResponse myInbox(@RequestBody TokenRequest request){
         try{
             boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
             if(flag == true){
-                List<Object[]> list =  requestRepository.fetchInboxRecord(request.getUserID());
-                return PortalResponse.customObjectSuccessResponse("fetchedData","",list);
+
+                List<DonateEntity> donateEntityList = donateRepository.listOfDonations();
+                List<UserEntity> userEntityList = userRepository.listOfUsers();
+                List<RequestEntity> requestEntityList = requestRepository.listOfRequests(request.getUserID());
+                List<InboxRecord> inboxRecordList = new ArrayList<InboxRecord>();
+
+                for (int i = 0; i < requestEntityList.size(); ++i){
+                    RequestEntity requestEntity = requestEntityList.get(i);
+                    DonateEntity donateEntity = donateRepository.findByItemID(requestEntity.getItemID());
+                    Optional<UserEntity> userEntity = userRepository.findById(requestEntity.getReqID());
+                    inboxRecordList.add(new InboxRecord());
+                    inboxRecordList.get(i).setName(userEntity.get().getName());
+                    inboxRecordList.get(i).setEmail(userEntity.get().getEmail());
+                    inboxRecordList.get(i).setPhone(userEntity.get().getPhone());
+                    inboxRecordList.get(i).setRequest_id(requestEntity.getReqID());
+                    inboxRecordList.get(i).setDonor_id(requestEntity.getDonorID());
+                    inboxRecordList.get(i).setItem_id(donateEntity.getItemID());
+                    inboxRecordList.get(i).setApprovedStatus(donateEntity.getAprrovedStatus());
+                    inboxRecordList.get(i).setExpireStatus(donateEntity.getExpireStatus());
+                    inboxRecordList.get(i).setItem_name(donateEntity.getItemName());
+                    inboxRecordList.get(i).setItem_description(donateEntity.getItemDesc());
+                    inboxRecordList.get(i).setDate(donateEntity.getDate());
+                }
+
+                return PortalResponse.customObjectSuccessResponse("fetchedData","",inboxRecordList);
+
             }
             else {
                 return PortalResponse.commonErrorResponse("invalid user", "", "");
@@ -49,6 +76,51 @@ public class UserRequestService {
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            return PortalResponse.commonErrorResponse("No matched record found", "", "");
+        }
+    }
+
+    //=======================================OUTBOX RECORD==============================================================
+
+    public PortalResponse myOutbox(@RequestBody TokenRequest request){
+        try{
+            boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
+            if(flag == true){
+
+                List<DonateEntity> donateEntityList = donateRepository.listOfDonations();
+                List<UserEntity> userEntityList = userRepository.listOfUsers();
+                List<RequestEntity> requestEntityList = requestRepository.listOfRequests2(request.getUserID());
+                List<InboxRecord> inboxRecordList = new ArrayList<InboxRecord>();
+
+                for (int i = 0; i < requestEntityList.size(); ++i){
+                    RequestEntity requestEntity = requestEntityList.get(i);
+                    DonateEntity donateEntity = donateRepository.findByItemID(requestEntity.getItemID());
+                    Optional<UserEntity> userEntity = userRepository.findById(requestEntity.getDonorID());
+                    inboxRecordList.add(new InboxRecord());
+                    inboxRecordList.get(i).setName(userEntity.get().getName());
+                    inboxRecordList.get(i).setEmail(userEntity.get().getEmail());
+                    inboxRecordList.get(i).setPhone(userEntity.get().getPhone());
+                    inboxRecordList.get(i).setRequest_id(requestEntity.getReqID());
+                    inboxRecordList.get(i).setDonor_id(requestEntity.getDonorID());
+                    inboxRecordList.get(i).setItem_id(donateEntity.getItemID());
+                    inboxRecordList.get(i).setApprovedStatus(donateEntity.getAprrovedStatus());
+                    inboxRecordList.get(i).setExpireStatus(donateEntity.getExpireStatus());
+                    inboxRecordList.get(i).setItem_name(donateEntity.getItemName());
+                    inboxRecordList.get(i).setItem_description(donateEntity.getItemDesc());
+                    inboxRecordList.get(i).setDate(donateEntity.getDate());
+                }
+
+                return PortalResponse.customObjectSuccessResponse("fetchedData","",inboxRecordList);
+
+            }
+            else {
+                return PortalResponse.commonErrorResponse("invalid user", "", "");
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return PortalResponse.commonErrorResponse("No matched record found", "", "");
         }
     }

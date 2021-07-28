@@ -88,6 +88,11 @@ public class AdminController {
         return adminStatsService.totalApprovedRequests(request);
     }
 
+    @PostMapping("/totalUserDonations")
+    public PortalResponse totalUserDonations(@RequestBody DonationRequest request){
+        return adminStatsService.totalDonations(request);
+    }
+
     @PostMapping("/totalRejectedRequests")
     public PortalResponse totalRejectedRequests(@RequestBody TokenRequest request){
         return adminStatsService.totalRejectedRequests(request);
@@ -96,6 +101,11 @@ public class AdminController {
     @PostMapping("/totalLockedUsers")
     public PortalResponse totalLockedUsers(@RequestBody TokenRequest request){
         return adminStatsService.totalLocked(request);
+    }
+
+    @PostMapping("/totalActiveUsers")
+    public PortalResponse totalActiveUsers(@RequestBody TokenRequest request){
+        return adminStatsService.totalActive(request);
     }
 
     @PostMapping("/totalDonorsOnADay")

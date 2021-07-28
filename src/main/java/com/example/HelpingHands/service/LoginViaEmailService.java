@@ -45,7 +45,11 @@ public class LoginViaEmailService {
 
     public PortalResponse sendOtp(@RequestBody LoginEmailRequest req){
         UserEntity userEntity1 = userRepository.findByEmail(req.getEmail());
-        OtpEntity otpEntity = new OtpEntity();
+        OtpEntity otpEntity = otpRepository.findByEmail(req.getEmail());
+        if(otpEntity == null){
+            OtpEntity otpEntity1 = new OtpEntity();
+            otpEntity = otpEntity1;
+        }
         PortalResponse portalResponse = new PortalResponse();
 
         if (userEntity1 != null) {
@@ -56,7 +60,7 @@ public class LoginViaEmailService {
                 otp = otp + z;
             }
 
-            String mailDesc = "Your one time password is " + otp + "   And your password is: " + userEntity1.getPassword();
+            String mailDesc = "Your one time password is " + otp;
             mailUtility.sendMail(req.getEmail(),mailDesc);
             saveMailOtp.saveOtpInfo(otpEntity,req.getEmail(), userEntity1.getPhone(),mailDesc,otp);
 
@@ -82,8 +86,10 @@ public class LoginViaEmailService {
             userEntity1.setToken(token);
             userRepository.save(userEntity1);
 
+            String mailDesc = "Your password is:" + userEntity1.getPassword();
+            mailUtility.sendMail(req.getEmail(),mailDesc);
 
-          return  portalResponse.commonSuccessResponse("Login successfull","",userEntity1);
+          return  portalResponse.commonSuccessResponse("Your password is sent to mail","",userEntity1);
         } else {
         return   portalResponse.commonErrorResponse("Invalid OTP","","");
         }

@@ -45,7 +45,11 @@ public class LoginViaSmsService {
     public PortalResponse sendOtp(@RequestBody LoginSmsRequest req){
 
         UserEntity userEntity1 = userRepository.findByPhone(req.getPhone());
-        OtpEntity otpEntity = new OtpEntity();
+        OtpEntity otpEntity = otpRepository.findByPhone(req.getPhone());
+        if(otpEntity == null){
+            OtpEntity otpEntity1 = new OtpEntity();
+            otpEntity = otpEntity1;
+        }
         PortalResponse portalResponse = new PortalResponse();
         if (userEntity1 != null) {
             String otp = "";
@@ -55,7 +59,7 @@ public class LoginViaSmsService {
                 otp = otp + z;
             }
 
-            String smsDesc = "Your one time password is " + otp + "    And your password is: " + userEntity1.getPassword();
+            String smsDesc = "Your one time password is " + otp;
             phoneUtility.sendSms(req.getPhone(),smsDesc);
             saveSmsOtp.saveOtpInfo(otpEntity,userEntity1,otp);
             return portalResponse.commonSuccessResponse("Sms send","",otpEntity);

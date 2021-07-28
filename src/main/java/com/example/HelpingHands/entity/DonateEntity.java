@@ -55,8 +55,4 @@ public class DonateEntity {
 
     @Column
     private Long aprrovedStatus;
-
-    @OneToMany(targetEntity = RequestEntity.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "itemID", referencedColumnName = "itemID")
-    private List<RequestEntity> getItemID;
 }

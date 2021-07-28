@@ -42,7 +42,7 @@ public class AdminService {
             boolean flag = verifyToken.verifyToken(request.getUserID(), request.getToken());
             if(flag == true){
 
-                List<DonateEntity> donateEntities =  donateRepository.getItems();
+                List<DonateEntity> donateEntities =  donateRepository.fetchAllItems();
 
 //                List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntities);
 

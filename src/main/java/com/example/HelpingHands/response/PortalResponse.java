@@ -1,6 +1,8 @@
 package com.example.HelpingHands.response;
 
 import com.example.HelpingHands.entity.DonateEntity;
+import com.example.HelpingHands.entity.InboxRecord;
+import com.example.HelpingHands.entity.UserEntity;
 import com.example.HelpingHands.request.MyInboxItems;
 import lombok.Data;
 import lombok.ToString;
@@ -18,7 +20,7 @@ public class PortalResponse {
     private String requestId;
     private Object data;
     private List<DonateEntity> data2;
-    private List<Object[]> data3;
+    private List<InboxRecord> data3;
 
     public static PortalResponse commonSuccessResponse( String message, String requestId, Object data){
         PortalResponse portalResponse=new PortalResponse();
@@ -30,7 +32,7 @@ public class PortalResponse {
         return portalResponse;
     }
 
-    public static PortalResponse customObjectSuccessResponse( String message, String requestId, List<Object[]> data3){
+    public static PortalResponse customObjectSuccessResponse( String message, String requestId, List<InboxRecord> data3){
         PortalResponse portalResponse=new PortalResponse();
         portalResponse.setStatusCode("200");
         portalResponse.setMessage(message);

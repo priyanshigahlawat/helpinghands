@@ -47,10 +47,10 @@ public class UpdateService {
              if(userEntity.get().getPassword().equals(req.getOldPassword())){
               userEntity.get().setPassword(req.getNewPassword());
                  userRepository.save(userEntity.get());
-                 return PortalResponse.customCountSuccessResponse("The password is updated", "");
+                 return PortalResponse.commonSuccessResponse("Password updated", "",userEntity);
              }
              else{
-                 return PortalResponse.commonErrorResponse("The passwords does not match ", "", "");
+                 return PortalResponse.commonErrorResponse("Incorect old password", "", "");
              }
         } else {
             return PortalResponse.commonErrorResponse("InvalidUser", "", "");

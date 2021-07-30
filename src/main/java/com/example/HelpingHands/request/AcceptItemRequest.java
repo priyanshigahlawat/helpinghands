@@ -7,4 +7,5 @@ public class AcceptItemRequest {
     private Long userID;
     private String token;
     private Long itemID;
+    private Long donorID;
 }

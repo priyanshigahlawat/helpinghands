@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Repository
@@ -24,9 +25,15 @@ public interface RequestRepository extends JpaRepository<RequestEntity,Long> {
     @Query(value = "SELECT count( * ) FROM request where reqid = :reqid and itemid = :itemid", nativeQuery = true)
     public Long getItemsRequested(Long reqid, Long itemid);
 
-    @Query(value = "SELECT * FROM request where request.donorid = :donorid", nativeQuery = true)
+    @Query(value = "SELECT * FROM request where request.donorid = :donorid and request_status = 0", nativeQuery = true)
     public List<RequestEntity> listOfRequests(Long donorid);
 
     @Query(value = "SELECT * FROM request where request.reqid = :donorid", nativeQuery = true)
     public List<RequestEntity> listOfRequests2(Long donorid);
+
+    @Query(value = "SELECT * from request where itemid = :itemid", nativeQuery = true)
+    public List<RequestEntity> listOfitemReq(Long itemid);
+
+    @Query(value = "SELECT * from request where itemid = :itemid and reqid = :id", nativeQuery = true)
+    public RequestEntity rejectReq(Long itemid, Long id);
 }

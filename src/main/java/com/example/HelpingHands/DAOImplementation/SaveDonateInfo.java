@@ -56,7 +56,7 @@ public class SaveDonateInfo {
         donateEntity.get().setUserID(userID);
         donateEntity.get().setAprrovedStatus(0L);
         donateEntity.get().setExpireStatus(0L);
-        donateEntity.get().setDate(date);
+        donateEntity.get().setDate(new Date());
         donateRepository.save(donateEntity.get());
 
         donateEntityList.add(donateEntity.get());

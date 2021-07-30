@@ -34,6 +34,7 @@ public class RequestItemService {
             requestEntity.setReqID(request.getUserID());
             requestEntity.setDonorID(donateEntity.get().getUserID());
             requestEntity.setItemID(request.getItemID());
+            requestEntity.setRequestStatus(0L);
             requestRepository.save(requestEntity);
             return PortalResponse.commonSuccessResponse("item Requested","",requestEntity);
         }

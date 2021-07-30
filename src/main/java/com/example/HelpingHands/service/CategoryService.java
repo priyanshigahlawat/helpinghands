@@ -1,6 +1,7 @@
 package com.example.HelpingHands.service;
 
 
+import com.example.HelpingHands.entity.CatEntity;
 import com.example.HelpingHands.entity.CategoryEntity;
 import com.example.HelpingHands.entity.DonateEntity;
 import com.example.HelpingHands.entity.UserEntity;
@@ -49,8 +50,21 @@ public class CategoryService {
                 if (req.getCategoryName().equals("All")) {
 
                     List<CategoryEntity> categoryEntity = categoryRepository.findAll();
-
-                    return portalResponse.commonSuccessResponse("Fetched all records", "", categoryEntity);
+                    List<CatEntity> categoryEntities = new ArrayList<CatEntity>();
+                    for(Long i=1L; i<=categoryEntity.size();++i){
+                        Optional<CategoryEntity> categoryEntity1 = categoryRepository.findById(i);
+                        if (categoryEntity != null) {
+                            CatEntity catEntity = new CatEntity();
+                            Long id = categoryEntity1.get().getCategoryID();
+                            List<DonateEntity> donateEntity = donateRepository.getCategoryId(id);
+//                            List<DonateEntity> donateEntityList = imageResponse.imageResponse(donateEntity);
+                            catEntity.setCategoryID(i);
+                            catEntity.setCategoryName(categoryEntity1.get().getCategoryName());
+                            catEntity.setGetCategoryID(donateEntity);
+                            categoryEntities.add(catEntity);
+                        }
+                    }
+                    return portalResponse.commonSuccessResponse("Fetched all records", "", categoryEntities);
                 }
                 else {
                     Optional<CategoryEntity> categoryEntity = categoryRepository.findById(req.getCategoryID());
@@ -65,6 +79,7 @@ public class CategoryService {
             }
             catch(Exception e){
                 System.out.println(e.getMessage());
+                e.printStackTrace();
                 return  portalResponse.commonErrorResponse("No matched record found","","");
             }
         return null;

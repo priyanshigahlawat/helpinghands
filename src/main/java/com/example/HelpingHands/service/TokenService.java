@@ -43,7 +43,7 @@ public class TokenService {
 
             } else if (userEntity.get().getToken().equals(req.getToken())) {
 
-                return portalResponse.commonSuccessResponse("valid user", "", "");
+                return portalResponse.commonSuccessResponse("valid user", "", userEntity.get().getAdminStatus());
 
             } else {
 

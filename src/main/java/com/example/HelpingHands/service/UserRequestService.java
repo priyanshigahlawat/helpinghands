@@ -130,9 +130,9 @@ public class UserRequestService {
     public PortalResponse rejectRequest(@RequestBody RemoveItemRequest request){
         boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
         if(flag == true){
-            Optional<RequestEntity> donateEntity = requestRepository.findById(request.getId());
-            requestRepository.delete(donateEntity.get());
-            return PortalResponse.commonSuccessResponse("Removed item","", "");
+            RequestEntity donateEntity = requestRepository.rejectReq(request.getItemID(),request.getId());
+            requestRepository.delete(donateEntity);
+            return PortalResponse.commonSuccessResponse("Removed item","", donateEntity);
         }
         else {
             return PortalResponse.commonErrorResponse("invalid user", "", "");
@@ -145,14 +145,26 @@ public class UserRequestService {
         boolean flag = verifyToken.verifyToken(request.getUserID(),request.getToken());
         if(flag == true){
             Optional<DonateEntity> donateEntity = donateRepository.findById(request.getItemID());
-            donateEntity.get().setAprrovedStatus(1L);
+            donateEntity.get().setExpireStatus(1L);
             donateEntity.get().setAdminMessage("approved");
             donateRepository.save(donateEntity.get());
             Long id = donateEntity.get().getUserID();
-            Optional<UserEntity> userEntity = userRepository.findById(id);
-            String email = userEntity.get().getEmail();
-            String mailDesc = "Your request for " + donateEntity.get().getItemName() + " has been approved by the donor";
-            mailUtility.sendMail(email, mailDesc);
+
+            List<RequestEntity> requestRepositoryList = requestRepository.listOfitemReq(request.getItemID());
+            for (int i = 0; i < requestRepositoryList.size(); ++i){
+                requestRepositoryList.get(i).setRequestStatus(1L);
+                requestRepository.save(requestRepositoryList.get(i));
+            }
+
+            Optional<UserEntity> userEntity1 = userRepository.findById(request.getDonorID());
+            Optional<UserEntity> userEntity = userRepository.findById(request.getUserID());
+            String email1 = userEntity1.get().getEmail();
+            String mailDesc = "Your request for " + donateEntity.get().getItemName() + " has been approved by the donor. For further details contact " + userEntity.get().getEmail() + " email and " + userEntity.get().getPhone() + " contact." ;
+            mailUtility.sendMail(email1, mailDesc);
+//
+//            String email = userEntity.get().getEmail();
+//            String mailDesc1 = "Your item " +  donateEntity.get().getItemName() + " has been donated";
+//            mailUtility.sendMail(email, mailDesc1);
 
             return PortalResponse.commonSuccessResponse("Item approved","", "");
         }

@@ -102,9 +102,19 @@ public class RecipientController {
         return userRequestService.myInbox(req);
     }
 
+    @PostMapping("/fetchUserOutbox")
+    public PortalResponse fetchOutboxItems(@RequestBody TokenRequest req){
+        return userRequestService.myOutbox(req);
+    }
+
     @PostMapping("/acceptUserInboxItem")
     public PortalResponse acceptInboxItems(@RequestBody AcceptItemRequest req){
         return userRequestService.acceptRequest(req);
+    }
+
+    @PostMapping("/rejectUserInboxItem")
+    public PortalResponse rejectInboxItems(@RequestBody RemoveItemRequest req){
+        return userRequestService.rejectRequest(req);
     }
 
     @PostMapping("/fetchItemData")

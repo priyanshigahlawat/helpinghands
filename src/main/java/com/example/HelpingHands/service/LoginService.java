@@ -47,8 +47,11 @@ public class LoginService {
                  return    portalResponse.commonErrorResponse("Password Incorrect","","");
                 }
 
-            } else {
-             return   portalResponse.commonErrorResponse("Record not found","","");
+            } else if(userEntity1 == null){
+             return   portalResponse.commonErrorResponse("Please sign up first!","","");
+            }
+            else if(userEntity1.getActiveStatus() == 0){
+                return   portalResponse.commonErrorResponse("You have been locked by the admin","","");
             }
 
 

@@ -29,4 +29,7 @@ public class RequestEntity {
     @Column
     private Long donorID;
 
+    @Column
+    private Long requestStatus;
+
 }

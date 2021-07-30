@@ -22,6 +22,9 @@ public interface DonateRepository  extends JpaRepository<DonateEntity,Long> {
     @Query(value = "SELECT * FROM donate where categoryID= :id and aprroved_status=1 and expire_status=0", nativeQuery = true)
     public List<DonateEntity> getCategoryId(Long id);
 
+    @Query(value = "SELECT * FROM donate where aprroved_status=1 and expire_status=0", nativeQuery = true)
+    public List<DonateEntity> getAll(Long id);
+
     @Query(value = "SELECT count( * ) FROM donate where aprroved_status=0 and expire_status=0", nativeQuery = true)
     public Long getPendingRequests();
 
